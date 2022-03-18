@@ -10,6 +10,7 @@ async def on_ready():
     for filename in list_file:
         __import__(f'events.{filename.split(".")[0]}')
     os.chdir('..')
+    print("Client prêt !")
 
 
 CLIENT.run(TOKEN)
