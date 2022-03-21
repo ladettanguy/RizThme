@@ -1,5 +1,6 @@
 import discord
 from pytube import YouTube
+
 from setting.config import CLIENT
 
 """
@@ -13,21 +14,18 @@ ydl_opts = {
 }
 """
 
+
 async def play(message: discord.Message):
     voice_channel: discord.VoiceChannel = discord.utils.get(message.guild.voice_channels, name="Général")
-    voice = discord.utils.get(CLIENT.voice_clients, guild=message.guild)
-    if not voice:
-        voice = discord.VoiceClient(CLIENT, voice_channel)
-    print(CLIENT.voice_clients)
-    print(voice_channel.id == 708312526164721719)
+    voice_client = discord.utils.get(CLIENT.voice_clients, guild=message.guild)
+    print(voice_client)
     url = message.content.split(' ')[1]
-    if not voice:
-        return
-    if not voice.is_connected():
-        await voice_channel.connect()
-    if not voice.is_playing():
-        print(url)
+
+    if not voice_client:
+        coro = voice_channel.connect()
+        voice_client = await coro
+    if not voice_client.is_playing():
         ytb: YouTube = YouTube(url)
         audio = ytb.streams[0]
-        print(type(audio))
-        await voice.play(audio)
+        # Todo changer le stream pour le jouer
+        voice_client.play(discord.FFmpegPCMAudio(audio))
