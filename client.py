@@ -1,11 +1,12 @@
 import os
-from setting import CLIENT, TOKEN, setup_music_queue
+from setting import CLIENT, TOKEN
+from models import Player
 
 
 @CLIENT.event
 async def on_ready():
     # Setup le dictionnaire de music queue
-    setup_music_queue()
+    Player.setup_music_queue()
 
     # Import les différents event du dossier events
     os.chdir('./events')
