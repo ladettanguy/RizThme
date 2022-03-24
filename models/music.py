@@ -6,12 +6,12 @@ import discord
 
 class Music(ABC):
 
-    def __init__(self, message):
-        self.message: discord.Message = message
+    def __init__(self, message: discord.Message):
+        self._message: discord.Message = message
         list_arg = message.content.split(' ')
-        self.original_url = ""
+        self._original_url = ""
         if len(list_arg) > 1:
-            self.original_url = list_arg[-1]
+            self._original_url = list_arg[-1]
 
     @abstractmethod
     def is_valid(self, send_message: bool = False) -> bool:
@@ -57,4 +57,4 @@ class Music(ABC):
         Send a message by the discord.py API
         :param message: AnyStr, to send in the orignal message's channel
         """
-        await self.message.channel.send(message)
+        await self._message.channel.send(message)

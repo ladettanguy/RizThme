@@ -1,17 +1,16 @@
 import discord
-from discord import FFmpegPCMAudio
 from pytube import YouTube
 
-from models.music import Music
+from models import Music
 
 
 class YTMusic(Music):
 
-    def __init__(self, message):
+    def __init__(self, message: discord.Message):
         super().__init__(message)
-        ytb = YouTube(self.original_url)
-        self.title = ytb.title
-        self.stream = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
+        ytb: YouTube = YouTube(self._original_url)
+        self._title: str = ytb.title
+        self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
     def is_valid(self, send_message: bool = False) -> bool:
         """
@@ -27,7 +26,7 @@ class YTMusic(Music):
         :param send_message: bool, Optional argument for send error message in message's channel with the error stack
         :return: True if the original_url isn't empty
         """
-        valid: bool = self.original_url != ""
+        valid: bool = self._original_url != ""
         if send_message and not valid:
             self.send("Something's wrong, try to use !play like this: \n !play [YouTube's Link]")
         return valid
@@ -38,7 +37,7 @@ class YTMusic(Music):
         :param send_message: bool, Optional argument for send error message in message's channel with the error stack
         :return: True if the stream is usable
         """
-        valid: bool = self.stream is not None
+        valid: bool = self._stream_url is not None
         if send_message and not valid:
             self.send("Something's wrong, your YouTube link is unfunctionnal")
         return valid
@@ -47,15 +46,15 @@ class YTMusic(Music):
         """
         :return: Title of the YouTube's video
         """
-        return self.title
+        return str(self._title)
 
     def get_url(self) -> str:
         """
         :return: user's input URL
         """
-        return self.original_url
+        return str(self._original_url)
 
-    def get_audio_source(self) -> FFmpegPCMAudio:
+    def get_audio_source(self) -> discord.FFmpegPCMAudio:
         """
         Create a discord.FFmpegPCMAudio from the PyTube.Stream gotten in __init__
 
@@ -63,4 +62,4 @@ class YTMusic(Music):
         :return: FFmpegPCMAudio usable like AudioSource for discord.VoiceClient
         """
         before_options = " -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
-        return discord.FFmpegPCMAudio(self.stream, before_options=before_options)
+        return discord.FFmpegPCMAudio(self._stream_url, before_options=before_options)

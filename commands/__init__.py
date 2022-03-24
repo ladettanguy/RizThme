@@ -1,7 +1,7 @@
 import os
 import importlib
-song_queue = []
 
+# Set up a dictionary with key, value = Command's name, function's command
 commands = {}
 os.chdir(f"{os.path.split(__file__)[0]}")
 list_file = os.listdir('.')

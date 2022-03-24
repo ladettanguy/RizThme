@@ -5,9 +5,9 @@ from models import Player
 
 async def now(message: discord.Message):  # sourcery skip: use-named-expression
     """
+    Send to the same textual channel, the current music playing in this Guild
 
-    :param message:
-    :return:
+    :param message: discord.Message
     """
     guild: discord.Guild = message.guild
     if not guild:
