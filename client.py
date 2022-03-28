@@ -5,7 +5,7 @@ import logging
 from setting import CLIENT, TOKEN
 from models import Player
 
-logging.basicConfig(filename='log.log', level=logging.DEBUG,
+logging.basicConfig(filename='log.log', level=logging.INFO,
                     format='%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s')
 
 
