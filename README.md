@@ -1,6 +1,26 @@
 # To launch the discord client
 
-First step is to add in your environments variables, a variables named "TOKEN" with in value, your discord application token
+First step is to add in your environments variables,
+a variables named "TOKEN" with in value, your discord application token.
+
+do this with:
+
+```console
+foo@bar:~$ export TOKEN=<your token>
+```
+
+next, check that the ffmpeg module is installed on your device.
+
+```console
+foo@bar:~$ ffmpeg -version
+```
+
+if not
+
+```console
+foo@bar:~$ sudo apt install ffmpeg 
+# or equivalent depending on your system
+```
 
 ## For Linux user
 
@@ -23,13 +43,10 @@ foo@bar:~$ sh entrypoint.sh
 
 ## For Windows user
 
-> I don't know. 
-> 
-> Maybe it's time to use a real Operating System.
+> Not sure yet
 
 you can do like this if you realy want to use that in Windows system
 
 ```
-pip install -r requirements.txt
-python3 client.py
+C:RizThme\> entrypoint.bat
 ```

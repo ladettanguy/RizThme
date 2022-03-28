@@ -1,12 +1,11 @@
 import os
-import subprocess
 import logging
 
 from setting import CLIENT, TOKEN
 from models import Player
 
 logging.basicConfig(filename='log.log', level=logging.INFO,
-                    format='%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s')
+                    format='%(levelname) -- %(name)s -- %(message)s -- %(asctime)s')
 
 
 @CLIENT.event
@@ -38,10 +37,6 @@ async def on_disconnect():
     It's used to make a shell command to kill the process
     """
     logging.info('Client down!')
-
-    # kill the current process because discord.py API don't make it after disconnected
-    # I know that's not a good solution. Contact tamikata#2214 if you have another solution.
-    subprocess.run(f'kill -9 {os.getpid()}', shell=True)
-
+    CLIENT.run(TOKEN)
 
 CLIENT.run(TOKEN)
