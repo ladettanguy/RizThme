@@ -5,7 +5,7 @@ from setting import CLIENT, TOKEN
 from models import Player
 
 logging.basicConfig(filename='log.log', level=logging.INFO,
-                    format='%(levelname) -- %(name)s -- %(message)s -- %(asctime)s')
+                    format='%(asctime)s -- %(name)s  -- %(levelname)s -- %(message)s')
 
 
 @CLIENT.event
