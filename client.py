@@ -1,6 +1,5 @@
 import os
 import subprocess
-import threading
 
 from setting import CLIENT, TOKEN
 from models import Player
@@ -38,7 +37,7 @@ async def on_disconnect():
 
     # kill the current process because discord.py API don't make it after disconnected
     # I know that's not a good solution. Contact tamikata#2214 if you have another solution.
-    subprocess.run(f'kill -9 {threading.current_thread().native_id}', shell=True)
+    subprocess.run(f'kill -9 {os.getpid()}', shell=True)
 
 
 CLIENT.run(TOKEN)
