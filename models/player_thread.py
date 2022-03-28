@@ -81,10 +81,12 @@ class Player(Thread):
 
             # Change the music currently playing
             title: str = music.get_title()
-            self._now_played = (title, music.get_url())
+            url: str = music.get_url()
+            self._now_played = (title, url)
 
             # Nécéssaire pour que la connection soit maintenu au dela de quelque minute
             music.play(self._voice_client, after=lambda _: self._prepare_the_next_song())
+            CLIENT.change_presence(discord.Activity(name=title, url=url, type=discord.ActivityType.playing))
 
             # Wait the music.play callback for continue
             self._semaphore_is_playing.acquire()
