@@ -1,3 +1,4 @@
+import logging
 from threading import Thread, Semaphore
 from typing import List, Tuple, Optional, Dict
 
@@ -64,6 +65,7 @@ class Player(Thread):
         super().__init__()
         self._guild: discord.Guild = guild
         if self._guild in self._guild_thread:
+            logging.critical('PlayerThread created 2 time for 1 Guild')
             raise DuplicateGuildPlayerThreadError(self._guild)
         self._queue: List[Music] = []
         self._voice_client: Optional[discord.VoiceClient] = None
@@ -112,9 +114,9 @@ class Player(Thread):
         # Create the Music instance for this message
         music: Music = YTMusic(message)
         # if the message is not a valid song
-        if not music.is_valid():
-            await music.send("Something's wrong, try to use !play like this: \n !play [YouTube's Link]")
-        if self._voice_client.is_playing():
+        if not music.is_valid(send_message=True):
+            pass
+        elif self._voice_client.is_playing():
             await music.send(f'Music: "{music.get_title()}", has been added')
         else:
             await music.send(f'I\'m now playing: "{music.get_title()}"')

@@ -1,3 +1,5 @@
+import logging
+
 import discord
 from pytube import YouTube
 
@@ -28,6 +30,7 @@ class YTMusic(Music):
         """
         valid: bool = self._original_url != ""
         if send_message and not valid:
+            logging.warning("!play: Dont valid music")
             self.send("Something's wrong, try to use !play like this: \n !play [YouTube's Link]")
         return valid
 
@@ -39,7 +42,8 @@ class YTMusic(Music):
         """
         valid: bool = self._stream_url is not None
         if send_message and not valid:
-            self.send("Something's wrong, your YouTube link is unfunctionnal")
+            logging.critical("!play: Dont valid music")
+            self.send("Something's wrong, YouTube link is unfunctionnal")
         return valid
 
     def get_title(self) -> str:
@@ -62,4 +66,8 @@ class YTMusic(Music):
         :return: FFmpegPCMAudio usable like AudioSource for discord.VoiceClient
         """
         before_options = " -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
-        return discord.FFmpegPCMAudio(self._stream_url, before_options=before_options)
+        try:
+            return discord.FFmpegPCMAudio(self._stream_url, before_options=before_options)
+        except Exception as e:
+            logging.critical(f'When FFmpegPCMAudio created:\n{e}')
+            self.send('Error with the YouTube API function')
