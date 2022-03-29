@@ -112,6 +112,10 @@ class Player(Thread):
             return tuple(self._now_played)
 
     async def _add_queue(self, message: discord.Message):
+        """
+        Add a music in the queue of the appropriate Guild
+        :param message: discord.Message
+        """
         # Create the Music instance for this message
         music: Music = YTMusic(message)
         # if the message is not a valid song
@@ -127,8 +131,8 @@ class Player(Thread):
 
     def _clear_queue(self):
         """
-
-        :return:
+        Clear the music queue of the Guild
+        (used for the stop command)
         """
         self._semaphore_queue = Semaphore(0)
         self._queue.clear()

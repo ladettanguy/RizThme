@@ -1,7 +1,8 @@
 import discord
+import logging
 
 from events import CLIENT
-from commands import commands
+from commands import commands, PREFIX
 
 
 @CLIENT.event
@@ -10,12 +11,22 @@ async def on_message(message: discord.Message):
     On_message event run for each message from Guild or Private Channel
     :param message: discord.Message
     """
+    # Ignore bot messages
+    if message.author.bot:
+        return
+    # Ignore messages without prefix
+    if not message.content.startswith(PREFIX):
+        return
+
+    # Split message into command and arguments
     cmd_line = message.content.split(' ')
-    # Cut the content for get the principal command
+    # Get command
     cmd: str = cmd_line[0]
-    cmd = cmd.replace('!', '')
+    cmd = cmd.removesuffix(PREFIX)
+
+    # if command is in commands list
     if cmd in commands:
-        print(f"la commande : {cmd}, by {message.author}")
+        logging.info(f"la commande : {cmd}, by {message.author}")
         func = commands[cmd]
         # Call the appropriate for the command wanted and pass the discord.Message in parameters
         await func(message)

@@ -5,6 +5,9 @@ import discord
 
 
 class Music(ABC):
+    """
+    Abstract class for music.
+    """
 
     def __init__(self, message: discord.Message):
         self._message: discord.Message = message

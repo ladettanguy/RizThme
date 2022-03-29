@@ -1,6 +1,8 @@
 import os
 import importlib
 
+PREFIX = '!'
+
 # Set up a dictionary with key, value = Command's name, function's command
 commands = {}
 os.chdir(f"{os.path.split(__file__)[0]}")

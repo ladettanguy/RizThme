@@ -7,6 +7,9 @@ from models import Music
 
 
 class YTMusic(Music):
+    """
+    Class for handling music from YouTube.
+    """
 
     def __init__(self, message: discord.Message):
         super().__init__(message)

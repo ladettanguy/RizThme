@@ -11,9 +11,9 @@ logging.basicConfig(filename='log.log', level=logging.INFO,
 @CLIENT.event
 async def on_ready():
     """
-    On_ready event run after the client connection is established.
+    On_ready event run after the client connection is established and the login is successful.
 
-    It's used to set up differents settings
+    It's used to set up differents settings and variables.
     """
     # Setup Players Guild's thread
     Player.setup_music_queue()
@@ -32,9 +32,9 @@ async def on_ready():
 @CLIENT.event
 async def on_disconnect():
     """
-    On_ready event run after the client close the connection.
+    On_ready event run after the server disconnect the client.
 
-    It's used to make a shell command to kill the process
+    It's used to relogin CLIENT.
     """
     logging.info('Client down!')
     CLIENT.login(TOKEN)
