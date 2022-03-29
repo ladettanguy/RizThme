@@ -37,6 +37,6 @@ async def on_disconnect():
     It's used to make a shell command to kill the process
     """
     logging.info('Client down!')
-    CLIENT.run(TOKEN)
+    CLIENT.login(TOKEN)
 
 CLIENT.run(TOKEN)
