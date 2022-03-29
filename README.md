@@ -1,4 +1,6 @@
-# To launch the discord client
+# Rizthme
+
+## Requierement
 
 First step is to add in your environments variables,
 a variables named "TOKEN" with in value, your discord application token.
@@ -22,7 +24,15 @@ foo@bar:~$ sudo apt install ffmpeg
 # or equivalent depending on your system
 ```
 
-## For Linux user
+## To launch the discord client
+
+```console
+foo@bar:~$ python3 client.py
+```
+
+### Automatical script launching
+
+#### For Linux user
 
 For use automatically your virtual environment. (The virtual environment name need to be "venv/")
 
@@ -41,7 +51,7 @@ or
 foo@bar:~$ sh entrypoint.sh
 ```
 
-## For Windows user
+#### For Windows user
 
 > Not sure yet
 
