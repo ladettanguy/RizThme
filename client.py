@@ -37,6 +37,6 @@ async def on_disconnect():
     It's used to relogin CLIENT.
     """
     logging.info('Client down!')
-    CLIENT.login(TOKEN)
+    await CLIENT.login(TOKEN)
 
 CLIENT.run(TOKEN)

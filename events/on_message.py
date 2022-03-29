@@ -22,7 +22,7 @@ async def on_message(message: discord.Message):
     cmd_line = message.content.split(' ')
     # Get command
     cmd: str = cmd_line[0]
-    cmd = cmd.removesuffix(PREFIX)
+    cmd = cmd.replace(PREFIX, '')
 
     # if command is in commands list
     if cmd in commands:
