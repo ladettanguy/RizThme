@@ -5,7 +5,7 @@ from setting import CLIENT, TOKEN
 @CLIENT.event
 async def on_disconnect():
     """
-    on_disconnect event run after the server disconnect the client.
+    this event run after the server disconnect the client.
 
     It's used to relogin CLIENT.
     """

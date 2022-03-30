@@ -8,8 +8,9 @@ from commands import commands, PREFIX
 @CLIENT.event
 async def on_message(message: discord.Message):
     """
-    On_message event run for each message from Guild or Private Channel
-    :param message: discord.Message
+    This event is called when a message is sent in a channel.
+
+    :param message: The message that was sent.
     """
     # Ignore bot messages
     if message.author.bot:
