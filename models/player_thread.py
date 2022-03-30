@@ -29,8 +29,8 @@ class Player(Thread):
         :param guild: discord.Guild
         """
         player = cls._guild_thread[guild]
-        player.join(0)
-        del cls._guild_thread[guild]
+        player.delete_thread()
+        cls._guild_thread.pop(guild)
 
     @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
@@ -81,9 +81,10 @@ class Player(Thread):
         self._now_played: Optional[Tuple[str, str]] = None
         self._semaphore_is_playing: Semaphore = Semaphore(0)
         self._semaphore_queue: Semaphore = Semaphore(0)
+        self._running = True
 
     def run(self):
-        while True:
+        while self._running:
             # Wait a music in the queue
             self._semaphore_queue.acquire()
             music: Music = self._queue.pop(0)
@@ -93,7 +94,8 @@ class Player(Thread):
             url: str = music.get_url()
             self._now_played = (title, url)
 
-            # Nécéssaire pour que la connection soit maintenu au dela de quelque minute
+            if not self._running:  # If the player is not running, stop the thread
+                break
             music.play(self._voice_client, after=lambda _: self._prepare_the_next_song())
 
             # Wait the music.play callback for continue
@@ -147,3 +149,14 @@ class Player(Thread):
         self._queue.clear()
         if self._voice_client:
             self._voice_client.stop()
+
+    def delete_thread(self):
+        """
+        Delete the music player thread
+
+        To do this, we set the @_running to False, and release all semaphores for continue into the @run end.
+        And when @run is finished, the player thread will be deleted.
+        """
+        self._running = False
+        self._semaphore_is_playing.release()
+        self._semaphore_queue.release()
