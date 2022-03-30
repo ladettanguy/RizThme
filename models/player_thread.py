@@ -19,10 +19,8 @@ class Player(Thread):
         Create a thread by discord.Guild where the CLIENT is present
         """
         for guild in CLIENT.guilds:
-            thread = Player(guild)
-            cls._guild_thread[guild] = thread
             # Starting a Player per guild
-            thread.start()
+            Player(guild).start()
 
     @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
@@ -67,6 +65,7 @@ class Player(Thread):
         if self._guild in self._guild_thread:
             logging.critical('PlayerThread created 2 time for 1 Guild')
             raise DuplicateGuildPlayerThreadError(self._guild)
+        self._guild_thread[guild] = self
         self._queue: List[Music] = []
         self._voice_client: Optional[discord.VoiceClient] = None
         self._now_played: Optional[Tuple[str, str]] = None
