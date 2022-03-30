@@ -23,6 +23,16 @@ class Player(Thread):
             Player(guild).start()
 
     @classmethod
+    def delete_player(cls, guild: discord.Guild):
+        """
+        Delete the player of the guild
+        :param guild: discord.Guild
+        """
+        player = cls._guild_thread[guild]
+        player.join(0)
+        del cls._guild_thread[guild]
+
+    @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
         """
         Set to the appropriate thread, the voice client needed to play song
