@@ -7,8 +7,9 @@ from models import Player
 @CLIENT.event
 async def on_ready():
     """
-    On_ready event run after the client connection is established and the login is successful.
+    this event run after the client is ready, the token is valid.
 
+    warning: this event is not lit "on_connect".
     It's used to set up differents settings and variables.
     """
     # Setup Players Guild's thread
