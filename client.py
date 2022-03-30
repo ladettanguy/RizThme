@@ -1,6 +1,6 @@
 import logging
 # essential for setting up events
-from events import *
+import events
 
 from setting import CLIENT, TOKEN
 
