@@ -87,6 +87,8 @@ class Player(Thread):
         while self._running:
             # Wait a music in the queue
             self._semaphore_queue.acquire()
+            if not self._running:  # If the player is not running, stop the thread
+                break
             music: Music = self._queue.pop(0)
 
             # Change the music currently playing
@@ -94,8 +96,6 @@ class Player(Thread):
             url: str = music.get_url()
             self._now_played = (title, url)
 
-            if not self._running:  # If the player is not running, stop the thread
-                break
             music.play(self._voice_client, after=lambda _: self._prepare_the_next_song())
 
             # Wait the music.play callback for continue
