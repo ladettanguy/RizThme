@@ -1,7 +1,7 @@
 import discord
 import logging
 
-from events import CLIENT
+from setting import CLIENT
 from commands import commands, PREFIX
 
 
