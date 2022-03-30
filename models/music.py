@@ -41,6 +41,13 @@ class Music(ABC):
         pass
 
     @abstractmethod
+    def get_duration(self) -> int:
+        """
+        :return: duration of the music in seconds
+        """
+        pass
+
+    @abstractmethod
     def get_url(self) -> str:
         """
         :return: user's input URL

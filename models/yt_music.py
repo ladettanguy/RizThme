@@ -14,6 +14,7 @@ class YTMusic(Music):
     def __init__(self, message: discord.Message):
         super().__init__(message)
         ytb: YouTube = YouTube(self._original_url)
+        self._duration = ytb.length
         self._title: str = ytb.title
         self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
@@ -74,3 +75,9 @@ class YTMusic(Music):
         except Exception as e:
             logging.critical(f'When FFmpegPCMAudio created:\n{e}')
             self.send('Error with the YouTube API function')
+
+    def get_duration(self) -> int:
+        """
+        :return: duration of the YouTube's video in seconds
+        """
+        return self._duration
