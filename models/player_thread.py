@@ -50,12 +50,12 @@ class Player(Thread):
         await cls._guild_thread[message.guild]._add_queue(message)
 
     @classmethod
-    def stop_music(cls, message):
+    def stop_music(cls, guild: discord.Guild):
         """
         Stop the music in the queue of the appropriate Guild
         :param message: discord.Message
         """
-        cls._guild_thread[message.guild]._clear_queue()
+        cls._guild_thread[guild]._clear_queue()
 
     @classmethod
     def get_now_played(cls, guild: discord.Guild) -> Optional[Tuple[str, str]]:
