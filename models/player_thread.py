@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from threading import Thread, Semaphore
 from typing import List, Tuple, Optional, Dict
@@ -50,12 +51,12 @@ class Player(Thread):
         await cls._guild_thread[message.guild]._add_queue(message)
 
     @classmethod
-    def stop_music(cls, message):
+    def stop_music(cls, guild: discord.Guild):
         """
         Stop the music in the queue of the appropriate Guild
-        :param message: discord.Message
+        :param guild: discord.Guild
         """
-        cls._guild_thread[message.guild]._clear_queue()
+        cls._guild_thread[guild]._clear_queue()
 
     @classmethod
     def get_now_played(cls, guild: discord.Guild) -> Optional[Tuple[str, str]]:
@@ -109,6 +110,7 @@ class Player(Thread):
         self._semaphore_is_playing.release()
         # Set the music currently playing to None if the queue is empty
         if not self._queue:
+            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), CLIENT.loop)
             self._now_played = None
 
     def _get_now_played(self) -> Optional[Tuple[str, str]]:
