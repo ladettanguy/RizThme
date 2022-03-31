@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Union, Any
 
 import discord
 
@@ -16,7 +16,7 @@ async def play(message: discord.Message) -> None:
 
     :param message: discord.Message, message sent by the user wanting to launch music
     """
-    guild: Optional[discord.Guild] = message.guild
+    guild: Union[discord.Guild, Any] = message.guild
     if guild is None:
         return
 
@@ -24,9 +24,9 @@ async def play(message: discord.Message) -> None:
     voice_client = discord.utils.get(CLIENT.voice_clients, guild=guild)
     if not voice_client:
         # Recover the voice channel of the message author.
-        voice_channel = message.author.voice.channel
+        voice_channel: discord.VoiceChannel = message.author.voice.channel
         # if not, connect (by creating) to the server with a discord.VoiceClient
-        voice_client: discord.VoiceClient = await voice_channel.connect()
+        voice_client: Union[discord.VoiceClient, discord.VoiceProtocol] = await voice_channel.connect()
         # Set the new VoiceClient to the appropriate thread
         Player.set_voice_client(guild, voice_client)
 
