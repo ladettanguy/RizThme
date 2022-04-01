@@ -1,8 +1,11 @@
 import logging
+from typing import Callable
 
 import discord
 from pytube import YouTube
+from pytube.exceptions import RegexMatchError
 
+from exception import BadLinkError
 from models import Music
 
 
@@ -13,10 +16,14 @@ class YTMusic(Music):
 
     def __init__(self, message: discord.Message):
         super().__init__(message)
-        ytb: YouTube = YouTube(self._original_url)
+        try:
+            ytb: YouTube = YouTube(self._original_url)
+        except RegexMatchError as e:
+            raise BadLinkError(self._original_url) from e
         self._duration = ytb.length
         self._title: str = ytb.title
         self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
+        self._loop: bool = False
 
     def is_valid(self, send_message: bool = False) -> bool:
         """
@@ -81,3 +88,18 @@ class YTMusic(Music):
         :return: duration of the YouTube's video in seconds
         """
         return self._duration
+
+    def play(self, voice_client: discord.VoiceClient, after: Callable = None) -> None:
+        """
+        Play the music with the voice_client
+        :param voice_client: discord.VoiceClient, voice_client to play the music
+        :param after: Callable, Optional argument for call after the music is played
+        """
+        voice_client.play(self.get_audio_source(), after=after)
+
+    def stop(self, voice_client: discord.VoiceClient) -> None:
+        """
+        Stop the music with the voice_client
+        :param voice_client: discord.VoiceClient, voice_client to stop the music
+        """
+        voice_client.stop()

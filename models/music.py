@@ -1,3 +1,4 @@
+import asyncio
 from abc import ABC, abstractmethod
 from typing import Optional, Callable
 
@@ -54,17 +55,34 @@ class Music(ABC):
         """
         pass
 
+    @abstractmethod
     def play(self, voice_client: discord.VoiceClient, after: Optional[Callable] = None):
         """
         Play the sound in the voice_client and execute the callback function @after when it's finish
         :param voice_client: discord.VoiceClient
         :param after: Optional[Callable]
         """
-        voice_client.play(self.get_audio_source(), after=after)
+        pass
+
+    @abstractmethod
+    def stop(self, voice_client: discord.VoiceClient):
+        """
+        Stop the music in the voice_client
+        :param voice_client: discord.VoiceClient
+        """
+        pass
 
     async def send(self, message: str):
         """
         Send a message by the discord.py API
         :param message: AnyStr, to send in the orignal message's channel
         """
-        await self._message.channel.send(message)
+        asyncio.run_coroutine_threadsafe(self._message.channel.send(message), asyncio.get_event_loop().loop)
+
+    def create_music_from_url(self, message: discord.Message) -> 'Music':
+        """
+        Create a Music instance from a URL
+        :return: Music instance
+        """
+        if self.is_valid(message) == "0":
+            pass
