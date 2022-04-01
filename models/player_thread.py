@@ -80,6 +80,7 @@ class Player(Thread):
         self._queue: List[Music] = []
         self._voice_client: Optional[discord.VoiceClient] = None
         self._now_played: Optional[Tuple[str, str]] = None
+        self._currently_playing_music: Optional[YTMusic] = None
         self._semaphore_is_playing: Semaphore = Semaphore(0)
         self._semaphore_queue: Semaphore = Semaphore(0)
         self._running = True
@@ -141,6 +142,16 @@ class Player(Thread):
         # Add music to the queue, and release the @_semaphore_queue
         self._queue.append(music)
         self._semaphore_queue.release()
+
+    def stop_music(self):
+        """
+        Stop the music in the queue of the appropriate Guild
+        """
+        self._running = False
+        if self._queue:
+            self._queue.clear()
+            self._semaphore_queue.release()
+            self._currently_playing_music.stop(self._voice_client)
 
     def _clear_queue(self):
         """
