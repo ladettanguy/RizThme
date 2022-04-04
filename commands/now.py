@@ -9,9 +9,7 @@ async def now(message: discord.Message):  # sourcery skip: use-named-expression
 
     :param message: discord.Message
     """
-    guild: discord.Guild = message.guild
-    if not guild:
-        return
+    guild: discord.Guild = message.guild or message.author.guild
     info = Player.get_now_played(guild)
     if info:
         await message.channel.send(f'titre: {info[0]}.\nLien: {info[1]}')
