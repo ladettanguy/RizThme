@@ -6,7 +6,7 @@ from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 
 from exception import BadLinkError
-from models import Music
+from .music import Music
 
 
 class YTMusic(Music):
@@ -14,10 +14,10 @@ class YTMusic(Music):
     Class for handling music from YouTube.
     """
 
-    def __init__(self, message: discord.Message):
-        super().__init__(message)
+    def __init__(self, url: str, channel: discord.TextChannel):
+        super().__init__(url, channel)
         try:
-            ytb: YouTube = YouTube(self._original_url)
+            ytb: YouTube = YouTube(url)
         except RegexMatchError as e:
             raise BadLinkError(self._original_url) from e
         self._duration = ytb.length
@@ -88,6 +88,9 @@ class YTMusic(Music):
         :return: duration of the YouTube's video in seconds
         """
         return self._duration
+
+    def message_music_added(self):
+        self.send(f'Music: "{self._title}", has been added')
 
     def play(self, voice_client: discord.VoiceClient, after: Callable = None) -> None:
         """
