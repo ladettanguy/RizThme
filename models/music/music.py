@@ -10,12 +10,9 @@ class Music(ABC):
     Abstract class for music.
     """
 
-    def __init__(self, message: discord.Message):
-        self._message: discord.Message = message
-        list_arg = message.content.split(' ')
-        self._original_url = ""
-        if len(list_arg) > 1:
-            self._original_url = list_arg[-1]
+    def __init__(self, url: str, channel: discord.TextChannel):
+        self._original_url = url
+        self._channel = channel
 
     @abstractmethod
     def is_valid(self, send_message: bool = False) -> bool:
@@ -72,17 +69,9 @@ class Music(ABC):
         """
         pass
 
-    async def send(self, message: str):
+    def send(self, message: str):
         """
         Send a message by the discord.py API
         :param message: AnyStr, to send in the orignal message's channel
         """
-        asyncio.run_coroutine_threadsafe(self._message.channel.send(message), asyncio.get_event_loop().loop)
-
-    def create_music_from_url(self, message: discord.Message) -> 'Music':
-        """
-        Create a Music instance from a URL
-        :return: Music instance
-        """
-        if self.is_valid(message) == "0":
-            pass
+        asyncio.run_coroutine_threadsafe(self._channel.send(message), asyncio.get_event_loop())

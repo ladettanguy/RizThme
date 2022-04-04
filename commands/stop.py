@@ -1,6 +1,7 @@
 import discord
 
 from models import Player
+from models.mode import MODE
 
 
 async def stop(message: discord.Message):
@@ -8,4 +9,7 @@ async def stop(message: discord.Message):
     Stop the music of your current Guild
     :param message: discord.Message
     """
-    Player.stop_music(message.guild)
+    guild = message.guild or message.author.guild
+    Player.set_mode(guild, MODE.NORMAL)
+    Player.stop_music(guild)
+
