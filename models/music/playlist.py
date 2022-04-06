@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 from typing import Iterable
 
+
 import discord
 
 
@@ -13,6 +14,7 @@ class Playlist(ABC):
         self._channel = channel
 
     def get_list_music(self) -> Iterable["Music"]:
+
         """
         Get list of music from playlist
         """

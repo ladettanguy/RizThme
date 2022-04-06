@@ -6,7 +6,6 @@ from .playlist_queue_adder import PlaylistQueueAdder
 
 from .music import Music, Playlist
 
-
 class MusicQueue(List[Music]):
 
     def __init__(self, semaphore: Semaphore, *args):

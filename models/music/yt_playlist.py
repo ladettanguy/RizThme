@@ -1,7 +1,6 @@
 import discord
 import pytube
 
-
 from typing import Iterable
 
 from pytube.helpers import DeferredGeneratorList
@@ -38,6 +37,7 @@ class YTPlaylist(Playlist):
         :return: the list of music in the playlist
         """
         return DeferredGeneratorList(self._music_generator())
+
 
     def get_title(self) -> str:
         """

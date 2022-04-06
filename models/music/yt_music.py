@@ -4,6 +4,7 @@ from typing import Callable
 import discord
 
 from multipledispatch import dispatch
+
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 
@@ -26,7 +27,7 @@ class YTMusic(Music):
         self._duration = ytb.length
         self._title: str = ytb.title
         self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
-
+          
     @dispatch(YouTube, discord.TextChannel)
     def __init__(self, youtube: YouTube, channel: discord.TextChannel):
         super().__init__(youtube.watch_url, channel)
