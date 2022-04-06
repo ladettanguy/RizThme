@@ -5,6 +5,7 @@ import events
 from setting import CLIENT, TOKEN
 
 # setting up logging
-logging.basicConfig(filename='log.log', level="INFO", format='%(asctime)s -- %(name)s  -- %(levelname)s -- %(message)s')
+logging.basicConfig(filename='log.log', filemode='w', level="INFO",
+                    format='%(asctime)s -- %(name)s  -- %(levelname)s -- %(message)s', force=True)
 
 CLIENT.run(TOKEN)

@@ -10,6 +10,8 @@ async def stop(message: discord.Message):
     :param message: discord.Message
     """
     guild = message.guild or message.author.guild
-    Player.set_mode(guild, MODE.NORMAL)
-    Player.stop_music(guild)
+
+    p = Player.get(guild)
+    p.clear_queue()
+    p.set_mode(MODE.NORMAL)
 

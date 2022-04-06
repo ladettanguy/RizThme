@@ -1,8 +1,9 @@
 import asyncio
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Iterable
 
 import discord
+
 
 
 class Playlist(ABC):
@@ -12,7 +13,7 @@ class Playlist(ABC):
         self._channel = channel
 
     @abstractmethod
-    def get_list_music(self) -> List["Music"]:
+    def get_list_music(self) -> Iterable["Music"]:
         """
         Get list of music from playlist
         """

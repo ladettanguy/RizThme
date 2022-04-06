@@ -1,3 +1,4 @@
+import asyncio
 from typing import Union, Any
 
 import discord
@@ -29,4 +30,4 @@ async def play(message: discord.Message) -> None:
         Player.set_voice_client(guild, voice_client)
 
     # Recovery of the URL present in the content of the message.
-    Player.add_music(message)
+    asyncio.run_coroutine_threadsafe(Player.add_music(message), asyncio.get_event_loop())
