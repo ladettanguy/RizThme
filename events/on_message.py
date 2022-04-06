@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 import logging
 
@@ -30,4 +32,4 @@ async def on_message(message: discord.Message):
         logging.info(f"la commande : {cmd}, by {message.author}")
         func = commands[cmd]
         # Call the appropriate for the command wanted and pass the discord.Message in parameters
-        await func(message)
+        asyncio.run_coroutine_threadsafe(func(message), asyncio.get_event_loop())

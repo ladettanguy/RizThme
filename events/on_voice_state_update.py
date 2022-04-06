@@ -16,7 +16,7 @@ in_progress_shedulers: Dict[discord.VoiceChannel, asyncio.Task] = {}
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     """
     This event is called when a member changes voice state.
-    :param member: Member object
+    :param member: Member concerning the voice state update
     :param before: VoiceState object before the change
     :param after: VoiceState object after the change
     """

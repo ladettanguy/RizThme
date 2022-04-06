@@ -13,4 +13,4 @@ async def on_guild_remove(guild):
     :type guild: discord.Guild
     """
     logging.info(f'{guild.name} has been removed')
-    Player.delete_player(guild)
+    Player.get(guild).delete_thread()
