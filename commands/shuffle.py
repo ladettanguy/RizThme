@@ -9,4 +9,6 @@ async def shuffle(message: discord.Message):
     Setting up the shuffle mode to the music player in the guild.
     """
     guild: discord.Guild = message.guild or message.author.guild
-    Player.set_mode(guild, MODE.SHUFFLE)
+      
+    Player.get(guild).set_mode(MODE.SHUFFLE)
+    await message.channel.send('Mode: Shuffle activeted !')

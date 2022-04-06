@@ -2,6 +2,9 @@ import logging
 from typing import Callable
 
 import discord
+
+from multipledispatch import dispatch
+
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 
@@ -14,6 +17,7 @@ class YTMusic(Music):
     Class for handling music from YouTube.
     """
 
+    @dispatch(str, discord.TextChannel)
     def __init__(self, url: str, channel: discord.TextChannel):
         super().__init__(url, channel)
         try:
@@ -23,7 +27,13 @@ class YTMusic(Music):
         self._duration = ytb.length
         self._title: str = ytb.title
         self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
-        self._loop: bool = False
+          
+    @dispatch(YouTube, discord.TextChannel)
+    def __init__(self, youtube: YouTube, channel: discord.TextChannel):
+        super().__init__(youtube.watch_url, channel)
+        self._duration = youtube.length
+        self._title = youtube.title
+        self._stream_url = youtube.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
     def is_valid(self, send_message: bool = False) -> bool:
         """

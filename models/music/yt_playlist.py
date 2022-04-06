@@ -1,7 +1,9 @@
 import discord
 import pytube
 
-from typing import List
+from typing import Iterable
+
+from pytube.helpers import DeferredGeneratorList
 
 from .playlist import Playlist
 from pytube.exceptions import RegexMatchError
@@ -15,12 +17,10 @@ class YTPlaylist(Playlist):
     def __init__(self, url: str, channel: discord.TextChannel):
         super().__init__(url, channel)
         try:
-            plt: pytube.Playlist = pytube.Playlist(url)
+            self.plt: pytube.Playlist = pytube.Playlist(url)
         except RegexMatchError as e:
             raise BadLinkError(self._original_url) from e
-        url_list = plt.video_urls
-        self._title = plt.title
-        self._music_queue = [YTMusic(url, channel) for url in url_list]
+        self._title = self.plt.title
 
     def get_url(self) -> str:
         """
@@ -28,11 +28,16 @@ class YTPlaylist(Playlist):
         """
         return self._original_url
 
-    def get_list_music(self) -> List[YTMusic]:
+    def _music_generator(self) -> str:
+        for youtube in self.plt.videos:
+            yield YTMusic(youtube, self._channel)
+
+    def get_list_music(self) -> Iterable[YTMusic]:
         """
         :return: the list of music in the playlist
         """
-        return self._music_queue
+        return DeferredGeneratorList(self._music_generator())
+
 
     def get_title(self) -> str:
         """
