@@ -2,6 +2,7 @@ import logging
 from typing import Callable
 
 import discord
+
 from multipledispatch import dispatch
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError

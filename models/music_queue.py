@@ -3,6 +3,7 @@ from threading import Semaphore
 from multipledispatch import dispatch
 
 from .playlist_queue_adder import PlaylistQueueAdder
+
 from .music import Music, Playlist
 
 

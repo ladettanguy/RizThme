@@ -29,5 +29,5 @@ async def playlist(message: discord.Message) -> None:
 
     await message.channel.send("Loading playlist... (this may take a while)")
 
-    # Recovery of the URL present in the content of the message.
+    # Call Player, to add playlist
     asyncio.run_coroutine_threadsafe(Player.add_playlist(message), asyncio.get_event_loop())

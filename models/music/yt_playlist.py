@@ -1,9 +1,11 @@
 import discord
 import pytube
 
+
 from typing import Iterable
 
 from pytube.helpers import DeferredGeneratorList
+
 from .playlist import Playlist
 from pytube.exceptions import RegexMatchError
 from exception import BadLinkError
