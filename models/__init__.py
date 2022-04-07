@@ -1,1 +1,1 @@
-from .player_thread import Player
+from .threads.audio_player import Player

@@ -30,4 +30,4 @@ async def play(message: discord.Message) -> None:
         Player.set_voice_client(guild, voice_client)
 
     # Call Player,to add music
-    asyncio.run_coroutine_threadsafe(Player.add_music(message), asyncio.get_event_loop())
+    asyncio.run_coroutine_threadsafe(Player.add_music(message), CLIENT.loop)

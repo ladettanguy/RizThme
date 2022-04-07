@@ -1,18 +1,15 @@
-import asyncio
 from abc import ABC, abstractmethod
 from typing import Optional, Callable
 
 import discord
 
+from .audio_item import AudioItem
 
-class Music(ABC):
+
+class SimpleMusic(AudioItem, ABC):
     """
     Abstract class for music.
     """
-
-    def __init__(self, url: str, channel: discord.TextChannel):
-        self._original_url = url
-        self._channel = channel
 
     @abstractmethod
     def is_valid(self, send_message: bool = False) -> bool:
@@ -32,23 +29,9 @@ class Music(ABC):
         pass
 
     @abstractmethod
-    def get_title(self) -> str:
-        """
-        :return: Title of the YouTube's video
-        """
-        pass
-
-    @abstractmethod
     def get_duration(self) -> int:
         """
         :return: duration of the music in seconds
-        """
-        pass
-
-    @abstractmethod
-    def get_url(self) -> str:
-        """
-        :return: user's input URL
         """
         pass
 
@@ -68,10 +51,3 @@ class Music(ABC):
         :param voice_client: discord.VoiceClient
         """
         pass
-
-    def send(self, message: str):
-        """
-        Send a message by the discord.py API
-        :param message: AnyStr, to send in the orignal message's channel
-        """
-        asyncio.run_coroutine_threadsafe(self._channel.send(message), asyncio.get_event_loop())
