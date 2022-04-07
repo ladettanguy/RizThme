@@ -58,15 +58,6 @@ class Player(Thread):
         guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
         cls.get(guild)._add_queue(music)
 
-    @classmethod
-    def set_mode(cls, guild: discord.Guild, mode: MODE):
-        """
-        Set the loop mode of the music player
-        :param guild: discord.Guild
-        :param mode: int, mode wanted
-        """
-        cls._guild_thread[guild].set_mode(mode)
-
     def __init__(self, guild: discord.Guild):
         super().__init__()
         self._guild: discord.Guild = guild
@@ -159,6 +150,7 @@ class Player(Thread):
         """
         self._semaphore_queue = Semaphore(0)
         self._queue = MusicQueue(self._semaphore_queue)
+        self._mode = MODE.NORMAL
         if self._voice_client and self._voice_client.is_playing():
             self._currently_playing_music.stop(self._voice_client)
 

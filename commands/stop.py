@@ -13,4 +13,3 @@ async def stop(message: discord.Message):
     
     p = Player.get(guild)
     p.clear_queue()
-    p.set_mode(MODE.NORMAL)

@@ -54,7 +54,6 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             # stop music and clear the queue
             p = Player.get(voice_client.guild)
             p.clear_queue()
-            p.set_mode(MODE.NORMAL)
             # disconnect from the voice channel
             dc = voice_client.disconnect()
             # delete this schedule from @in_progress_shedulers
