@@ -1,17 +1,15 @@
 import logging
-from typing import Callable
 
 import discord
 
-from multipledispatch import dispatch
 from pytube import YouTube
-from pytube.exceptions import RegexMatchError
+from typing import Callable
+from multipledispatch import dispatch
 
-from exception import BadLinkError
-from .music import Music
+from ..simple_music import SimpleMusic
 
 
-class YTMusic(Music):
+class YTMusic(SimpleMusic):
     """
     Class for handling music from YouTube.
     """
@@ -19,19 +17,13 @@ class YTMusic(Music):
     @dispatch(str, discord.TextChannel)
     def __init__(self, url: str, channel: discord.TextChannel):
         super().__init__(url, channel)
-        try:
-            ytb: YouTube = YouTube(url)
-        except RegexMatchError as e:
-            raise BadLinkError(self._original_url) from e
-        self._duration = ytb.length
-        self._title: str = ytb.title
-        self._stream_url: str = ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
+        self.ytb: YouTube = YouTube(url)
+        self._stream_url: str = self.ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
     @dispatch(YouTube, discord.TextChannel)
     def __init__(self, youtube: YouTube, channel: discord.TextChannel):
         super().__init__(youtube.watch_url, channel)
-        self._duration = youtube.length
-        self._title = youtube.title
+        self.ytb = youtube
         self._stream_url = youtube.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
     def is_valid(self, send_message: bool = False) -> bool:
@@ -48,7 +40,7 @@ class YTMusic(Music):
         :param send_message: bool, Optional argument for send error message in message's channel with the error stack
         :return: True if the original_url isn't empty
         """
-        valid: bool = self._original_url != ""
+        valid: bool = self._url != ""
         if send_message and not valid:
             logging.warning("!play: Dont valid music")
             self.send("Something's wrong, try to use !play like this: \n !play [YouTube's Link]")
@@ -70,13 +62,13 @@ class YTMusic(Music):
         """
         :return: Title of the YouTube's video
         """
-        return str(self._title)
+        return str(self.ytb.title)
 
     def get_url(self) -> str:
         """
         :return: user's input URL
         """
-        return str(self._original_url)
+        return str(self.ytb.watch_url)
 
     def get_audio_source(self) -> discord.FFmpegPCMAudio:
         """
@@ -96,10 +88,7 @@ class YTMusic(Music):
         """
         :return: duration of the YouTube's video in seconds
         """
-        return self._duration
-
-    def message_music_added(self):
-        self.send(f'Music: "{self._title}", has been added')
+        return self.ytb.length
 
     def play(self, voice_client: discord.VoiceClient, after: Callable = None) -> None:
         """

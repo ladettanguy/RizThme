@@ -10,11 +10,11 @@ from multipledispatch import dispatch
 
 from exception import DuplicateGuildPlayerThreadError
 
-from .music import Music, Playlist
+from ..musics import SimpleMusic, Playlist
 
-from .music_queue import MusicQueue
-from .mode import MODE
-from .factory import PlaylistFactory, MusicFactory
+from ..music_queue import MusicQueue
+from ..mode import MODE
+from ..factory import MusicFactory
 from setting import CLIENT
 
 
@@ -59,23 +59,13 @@ class Player(Thread):
         cls.get(guild)._add_queue(music)
 
     @classmethod
-    async def add_playlist(cls, message: discord.Message):
-        """
-        Add a playlist in the queue of the appropriate Guild
-        :param message: discord.Message
-        """
-        playlist = PlaylistFactory.create_music(message)
-        guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
-        cls.get(guild)._add_queue(playlist)
-
-    @classmethod
     def set_mode(cls, guild: discord.Guild, mode: MODE):
         """
         Set the loop mode of the music player
         :param guild: discord.Guild
         :param mode: int, mode wanted
         """
-        cls._guild_thread[guild]._set_mode(mode)
+        cls._guild_thread[guild].set_mode(mode)
 
     def __init__(self, guild: discord.Guild):
         super().__init__()
@@ -85,7 +75,7 @@ class Player(Thread):
             raise DuplicateGuildPlayerThreadError(self._guild)
         self._guild_thread[guild] = self
         self._voice_client: Optional[discord.VoiceClient] = None
-        self._currently_playing_music: Optional[Music] = None
+        self._currently_playing_music: Optional[SimpleMusic] = None
         self._semaphore_is_playing: Semaphore = Semaphore(0)
         self._semaphore_queue: Semaphore = Semaphore(0)
         self._queue = MusicQueue(self._semaphore_queue)
@@ -110,8 +100,7 @@ class Player(Thread):
                 break
             # Get the music to play
             index = randint(0, len(self._queue) - 1) if self._mode == MODE.SHUFFLE else 0
-            self._currently_playing_music: Music = self._queue[index]
-
+            self._currently_playing_music: SimpleMusic = self._queue[index]
 
             # Play the music
             self._currently_playing_music.play(self._voice_client, after=lambda _: self._prepare_the_next_song())
@@ -147,8 +136,8 @@ class Player(Thread):
         if self._currently_playing_music:
             return self._currently_playing_music.get_title(), self._currently_playing_music.get_url()
 
-    @dispatch(Music)
-    def _add_queue(self, music: Music):
+    @dispatch(SimpleMusic)
+    def _add_queue(self, music: SimpleMusic):
         """
         Add a music in the queue of the appropriate Guild
         :param music: Music
@@ -169,13 +158,11 @@ class Player(Thread):
         (used for the stop command)
         """
         self._semaphore_queue = Semaphore(0)
-        self._queue.set_semaphore(self._semaphore_queue)
-        self._queue.clear()
-        if self._voice_client:
+        self._queue = MusicQueue(self._semaphore_queue)
+        if self._voice_client and self._voice_client.is_playing():
             self._currently_playing_music.stop(self._voice_client)
 
     def set_mode(self, mode: MODE):
-
         """
         Set the loop mode of the music player
         :param mode: MODE
