@@ -13,13 +13,6 @@ class MusicQueue(List[SimpleMusic]):
         self._queue_semaphore = semaphore
         self._is_adding_lock = Lock()
 
-    def set_queue_semaphore(self, sem: Semaphore):
-        """
-        Set a new semaphore for the queue
-        :param sem: The new semaphore
-        """
-        self._queue_semaphore = sem
-
     @dispatch(SimpleMusic)
     def add_music(self, music: SimpleMusic):
         # if the message is a valid song

@@ -19,7 +19,9 @@ class PlaylistQueueAdder(Thread):
 
     def run(self):
         self._is_adding_lock.acquire()
-        for music in self._playlist.get_list_music():
+        # Add all music from the playlist to the queue
+        for music in self._playlist.get_list_music():  # get_list_music() return a DeferredGeneratorList.
+            # If the playable is valid, so it can be added to the queue.
             if music.is_valid(send_message=True):
                 self._queue.append(music)
                 self._queue_semaphore.release()
