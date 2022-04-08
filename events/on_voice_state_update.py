@@ -4,6 +4,7 @@ from typing import Dict
 
 import discord
 
+from models.mode import MODE
 from setting import CLIENT
 from models import Player
 
@@ -16,6 +17,12 @@ in_progress_shedulers: Dict[discord.VoiceChannel, asyncio.Task] = {}
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     """
     This event is called when a member changes voice state.
+
+    We try to check here, if the CLIENT is alone in the voice channel.
+    If so, we try to shedule a task to set a timeout before rechecking if CLIENT is always alone in the voice channel.
+
+    If a member join the CLIENT, that's stop the sheduler.
+
     :param member: Member concerning the voice state update
     :param before: VoiceState object before the change
     :param after: VoiceState object after the change
@@ -45,7 +52,8 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         # if CLIENT is alone
         if check_alone_in_voice_channel(voice_client):
             # stop music and clear the queue
-            Player.stop_music(voice_client.guild)
+            p = Player.get(voice_client.guild)
+            p.clear_queue()
             # disconnect from the voice channel
             dc = voice_client.disconnect()
             # delete this schedule from @in_progress_shedulers
