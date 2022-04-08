@@ -151,6 +151,8 @@ class Player(Thread):
         self._semaphore_queue = Semaphore(0)
         self._queue = MusicQueue(self._semaphore_queue)
         self._mode = MODE.NORMAL
+        if self._voice_client.is_paused():
+            self._voice_client.resume()
         if self._voice_client and self._voice_client.is_playing():
             self._currently_playing_music.stop(self._voice_client)
 
