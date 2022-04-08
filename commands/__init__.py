@@ -1,1 +1,1 @@
-from . import kill, next, now, play, pause, resume, stop, shuffle, unloop, loop
+from . import kill, skip, now, play, pause, resume, stop, shuffle, unloop, loop

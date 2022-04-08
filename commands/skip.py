@@ -3,7 +3,7 @@ import discord
 from setting import CLIENT
 
 
-async def next(message: discord.Message):
+async def skip(message: discord.Message):
     """
     pass the music of your current Guild
 
@@ -17,4 +17,4 @@ async def next(message: discord.Message):
     if voice_client.is_playing():
         voice_client.stop()
 
-CLIENT.add_command(["next"], next)
+CLIENT.add_command(["next", "skip"], skip)
