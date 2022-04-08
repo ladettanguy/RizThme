@@ -1,9 +1,6 @@
 import discord
 import pytube
 
-
-from typing import Iterable
-
 from pytube.helpers import DeferredGeneratorList
 from ..playlist import Playlist
 
@@ -27,7 +24,7 @@ class YTPlaylist(Playlist):
         for youtube in self.plt.videos:
             yield YTMusic(youtube, self._channel)
 
-    def get_list_music(self) -> Iterable[YTMusic]:
+    def get_list_music(self) -> DeferredGeneratorList:
         """
         :return: the list of music in the playlist
         """
