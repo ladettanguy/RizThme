@@ -4,7 +4,7 @@ import discord
 from abc import ABC
 
 from exception import BadLinkError
-from ..musics import YTMusic, YTPlaylist
+from ..musics import YTMusic, YTPlaylist, Playable
 
 
 class AudioFactory(ABC):
@@ -13,15 +13,15 @@ class AudioFactory(ABC):
     """
 
     dict_regex = {
-        YTMusic: r"^https?:\/\/(www.)?(youtube.com|youtube.com|youtu.be)\/watch?(.*)$",
-        YTPlaylist: r"^https?:\/\/(www.)?(youtube.com|youtube.com|youtu.be)\/playlist?(.*)$",
+        YTMusic: r"^https?:\/\/(www.)?(youtube.com|youtu.be)\/watch?(.*)$",
+        YTPlaylist: r"^https?:\/\/(www.)?(youtube.com|youtu.be)\/playlist?(.*)$",
     }
 
     def __init__(self):
         raise NotImplementedError("This is an abstract class")
 
     @classmethod
-    def create_music(cls, message: discord.Message) -> "Music":
+    def create_playable(cls, message: discord.Message) -> Playable:
         """
         Create a music object based on the message.
 
@@ -31,7 +31,7 @@ class AudioFactory(ABC):
         """
         url = message.content.split(" ")[-1]
         channel = message.channel
-        for MusicClass, regex in cls.dict_regex.items():
+        for PlayableClass, regex in cls.dict_regex.items():
             if re.match(regex, url):
-                return MusicClass(url, channel)
+                return PlayableClass(url, channel)
         raise BadLinkError(f'your URL "{url}" is not a valid link.')
