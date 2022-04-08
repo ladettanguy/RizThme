@@ -25,3 +25,5 @@ async def kill(message: discord.Message):
         # I need to kill the current process to stop the program.
         # I know that's not a good solution. Contact tamikata#2214 if you have another solution.
         subprocess.run(f'kill -9 {os.getpid()}', shell=True)
+
+CLIENT.add_command(["kill"], kill)

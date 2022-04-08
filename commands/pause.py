@@ -18,3 +18,5 @@ async def pause(message: discord.Message):  # sourcery skip: use-named-expressio
     if voice_client.is_playing():
         voice_client.pause()
         await message.channel.send("Music paused.")
+
+CLIENT.add_command(["pause"], pause)
