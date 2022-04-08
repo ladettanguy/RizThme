@@ -14,7 +14,7 @@ from ..musics import SimpleMusic, Playlist
 
 from ..music_queue import MusicQueue
 from ..mode import MODE
-from ..factory import MusicFactory
+from ..factory import AudioFactory
 from setting import CLIENT
 
 
@@ -54,7 +54,7 @@ class Player(Thread):
         Add a music in the queue of the appropriate Guild
         :param message: discord.Message
         """
-        music = MusicFactory.create_music(message)
+        music = AudioFactory.create_music(message)
         guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
         cls.get(guild)._add_queue(music)
 

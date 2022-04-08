@@ -7,7 +7,7 @@ from exception import BadLinkError
 from ..musics import YTMusic, YTPlaylist
 
 
-class MusicFactory(ABC):
+class AudioFactory(ABC):
     """
     Factory class for creating music objects.
     """
