@@ -21,6 +21,10 @@ class YTPlaylist(Playlist):
         return self._url
 
     def _music_generator(self) -> str:
+        """
+        Generator that yield the music of the playlist
+        :return: a music of the playlist
+        """
         for youtube in self.plt.videos:
             yield YTMusic(youtube, self._channel)
 
