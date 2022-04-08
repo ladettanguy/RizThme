@@ -16,3 +16,5 @@ async def next(message: discord.Message):
         voice_client.resume()
     if voice_client.is_playing():
         voice_client.stop()
+
+CLIENT.add_command(["next"], next)

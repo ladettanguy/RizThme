@@ -31,3 +31,5 @@ async def play(message: discord.Message) -> None:
 
     # Call Player,to add music
     asyncio.run_coroutine_threadsafe(Player.add_music(message), CLIENT.loop)
+
+CLIENT.add_command(["play"], play)

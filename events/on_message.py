@@ -4,7 +4,6 @@ import discord
 import logging
 
 from setting import CLIENT
-from commands import commands, PREFIX
 
 
 @CLIENT.event
@@ -18,18 +17,18 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
     # Ignore messages without prefix
-    if not message.content.startswith(PREFIX):
+    if not message.content.startswith(CLIENT.PREFIX):
         return
 
     # Split message into command and arguments
     cmd_line = message.content.split(' ')
     # Get command
     cmd: str = cmd_line[0]
-    cmd = cmd.replace(PREFIX, '')
+    cmd = cmd.replace(CLIENT.PREFIX, '')
 
     # if command is in commands list
-    if cmd in commands:
+    if cmd in CLIENT.commands:
         logging.info(f"la commande : {cmd}, by {message.author}")
-        func = commands[cmd]
+        func = CLIENT.commands[cmd]
         # Call the appropriate for the command wanted and pass the discord.Message in parameters
         asyncio.run_coroutine_threadsafe(func(message), CLIENT.loop)

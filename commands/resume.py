@@ -19,3 +19,5 @@ async def resume(message: discord.Message):  # sourcery skip: use-named-expressi
     if voice_client.is_paused():
         voice_client.resume()
         await message.channel.send("Music resumed.")
+
+CLIENT.add_command(["resume"], resume)

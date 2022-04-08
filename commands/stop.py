@@ -1,7 +1,7 @@
 import discord
 
 from models import Player
-from models.mode import MODE
+from setting import CLIENT
 
 
 async def stop(message: discord.Message):
@@ -13,3 +13,5 @@ async def stop(message: discord.Message):
     
     p = Player.get(guild)
     p.clear_queue()
+
+CLIENT.add_command(["stop"], stop)

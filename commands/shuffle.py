@@ -2,6 +2,7 @@ import discord
 
 from models import Player
 from models.mode import MODE
+from setting import CLIENT
 
 
 async def shuffle(message: discord.Message):
@@ -12,3 +13,5 @@ async def shuffle(message: discord.Message):
       
     Player.get(guild).set_mode(MODE.SHUFFLE)
     await message.channel.send('Mode: Shuffle activeted !')
+
+CLIENT.add_command(["shuffle"], shuffle)
