@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Callable
 
 import discord
 
@@ -16,7 +17,7 @@ class Playable(ABC):
         pass
 
     @abstractmethod
-    def play(self, voice_client: discord.VoiceClient):
+    def play(self, voice_client: discord.VoiceClient, after: Callable = None):
         """
         Plays the playable item.
         """
