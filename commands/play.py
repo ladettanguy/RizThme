@@ -1,5 +1,5 @@
 import asyncio
-from typing import Union, Any
+from typing import Union
 
 import discord
 

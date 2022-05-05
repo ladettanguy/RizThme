@@ -19,4 +19,4 @@ async def now(message: discord.Message):  # sourcery skip: use-named-expression
     else:
         await message.channel.send("I'm not playing song")
 
-CLIENT.add_command(["now"], now)
+CLIENT.add_command(["now", "nowplaying", "nowplay"], now)
