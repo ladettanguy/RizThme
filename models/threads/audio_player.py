@@ -155,6 +155,7 @@ class Player(Thread):
             self._voice_client.resume()
         if self._voice_client and self._voice_client.is_playing():
             self._currently_playing_music.stop(self._voice_client)
+        self._currently_playing_music = None
 
     def set_mode(self, mode: MODE):
         """
