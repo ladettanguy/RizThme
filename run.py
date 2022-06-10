@@ -13,5 +13,4 @@ from .setting import CLIENT, TOKEN
 logging.basicConfig(filename='log.log', filemode='w', level="INFO",
                     format='%(asctime)s -- %(name)s  -- %(levelname)s -- %(message)s', force=True)
 
-asyncio.run(CLIENT.connect())
-asyncio.run(CLIENT.login(TOKEN))
+asyncio.run(CLIENT.start(token=TOKEN))
