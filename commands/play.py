@@ -3,8 +3,8 @@ from typing import Union
 
 import discord
 
-from models import Player
-from setting import CLIENT
+from ..models import Player
+from ..setting import CLIENT
 
 
 async def play(message: discord.Message) -> None:

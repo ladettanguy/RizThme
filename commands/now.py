@@ -1,7 +1,7 @@
 import discord
 
-from models import Player
-from setting import CLIENT
+from ..models import Player
+from ..setting import CLIENT
 
 
 async def now(message: discord.Message):  # sourcery skip: use-named-expression

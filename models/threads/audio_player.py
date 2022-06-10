@@ -8,14 +8,14 @@ from typing import Tuple, Optional, Dict
 import discord
 from multipledispatch import dispatch
 
-from exception import DuplicateGuildPlayerThreadError
+from ...exception import DuplicateGuildPlayerThreadError
 
 from ..musics import SimpleMusic, Playlist
 
 from ..music_queue import MusicQueue
 from ..mode import MODE
 from ..factory import AudioFactory
-from setting import CLIENT
+from ...setting import CLIENT
 
 
 class Player(Thread):

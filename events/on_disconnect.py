@@ -1,5 +1,5 @@
 import logging
-from setting import CLIENT, TOKEN
+from ..setting import CLIENT, TOKEN
 
 
 @CLIENT.event

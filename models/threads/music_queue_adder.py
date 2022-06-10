@@ -1,7 +1,7 @@
 from threading import Thread, Semaphore, Lock
 from typing import List
 
-from models.musics import SimpleMusic
+from ..musics import SimpleMusic
 
 
 class MusicQueueAdder(Thread):

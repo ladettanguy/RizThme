@@ -2,7 +2,7 @@ import os
 import subprocess
 import discord
 
-from setting import CLIENT
+from ..setting import CLIENT
 
 
 async def kill(message: discord.Message):

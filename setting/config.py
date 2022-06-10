@@ -1,5 +1,5 @@
 import os
-from setting.client import Client
+from .client import Client
 
 CLIENT = Client()
 TOKEN = os.getenv('TOKEN')

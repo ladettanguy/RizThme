@@ -1,8 +1,8 @@
 import discord
 
-from models import Player
-from models.mode import MODE
-from setting import CLIENT
+from ..models import Player
+from ..models.mode import MODE
+from ..setting import CLIENT
 
 
 async def shuffle(message: discord.Message):

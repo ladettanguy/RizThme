@@ -3,7 +3,7 @@ import asyncio
 import discord
 import logging
 
-from setting import CLIENT
+from ..setting import CLIENT
 
 
 @CLIENT.event

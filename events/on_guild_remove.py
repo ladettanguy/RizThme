@@ -1,7 +1,7 @@
 import logging
 
-from setting import CLIENT
-from models import Player
+from ..setting import CLIENT
+from ..models import Player
 
 
 @CLIENT.event

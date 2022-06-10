@@ -1,6 +1,6 @@
 import discord
 
-from setting import CLIENT
+from ..setting import CLIENT
 
 
 async def pause(message: discord.Message):  # sourcery skip: use-named-expression

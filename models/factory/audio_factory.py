@@ -3,7 +3,7 @@ import discord
 
 from abc import ABC
 
-from exception import BadLinkError
+from ...exception import BadLinkError
 from ..musics import YTMusic, YTPlaylist, Playable
 
 

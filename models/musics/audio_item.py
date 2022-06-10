@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 import discord
 
-from setting import CLIENT
+from ...setting import CLIENT
 
 
 class AudioItem(ABC):

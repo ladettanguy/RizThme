@@ -4,9 +4,8 @@ from typing import Dict
 
 import discord
 
-from models.mode import MODE
-from setting import CLIENT
-from models import Player
+from ..setting import CLIENT
+from ..models import Player
 
 timeout = 10
 

@@ -1,11 +1,12 @@
 import logging
 
 # essential for setting up events
-import events
+from . import events
 # essential for setting up the client commands
-import commands
+from . import commands
 
-from setting import CLIENT, TOKEN
+
+from .setting import CLIENT, TOKEN
 
 
 logging.basicConfig(filename='log.log', filemode='w', level="INFO",
