@@ -7,7 +7,7 @@ import discord
 class Client(discord.Client):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(loop=asyncio.get_event_loop())
         self.PREFIX = '!'
         self.commands = {}
 
