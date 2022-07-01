@@ -4,16 +4,15 @@ from typing import Dict
 
 import discord
 
-from ..setting import CLIENT
-from ..models import Player
+from models.threads import Player
 
 timeout = 10
 
-in_progress_shedulers: Dict[discord.VoiceChannel, asyncio.Task] = {}
+in_progress_schedulers: Dict[discord.VoiceChannel, asyncio.Task] = {}
 
 
-@CLIENT.event
-async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
+async def on_voice_state_update(client: discord.Client, member: discord.Member, before: discord.VoiceState,
+                                after: discord.VoiceState):
     """
     This event is called when a member changes voice state.
 
@@ -22,6 +21,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 
     If a member join the CLIENT, that's stop the sheduler.
 
+    :param client: Client discord
     :param member: Member concerning the voice state update
     :param before: VoiceState object before the change
     :param after: VoiceState object after the change
@@ -32,14 +32,14 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         return
 
     # if member join the voice channel, stop the asyncio.Task
-    if after.channel in in_progress_shedulers.keys():
+    if after.channel in in_progress_schedulers.keys():
         # cancel it
-        in_progress_shedulers[after.channel].cancel()
+        in_progress_schedulers[after.channel].cancel()
         # delete it from the dict
-        del in_progress_shedulers[after.channel]
+        del in_progress_schedulers[after.channel]
 
     # get the voice client of the old voice channel member. if the member not being in the bot voice channel, do nothing
-    voice_client: discord.VoiceClient = discord.utils.get(CLIENT.voice_clients, channel=before.channel)
+    voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, channel=before.channel)
     if voice_client is None:
         return
 
@@ -55,17 +55,17 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             p.clear_queue()
             # disconnect from the voice channel
             dc = voice_client.disconnect()
-            # delete this schedule from @in_progress_shedulers
-            del in_progress_shedulers[voice_client.channel]
+            # delete this schedule from @in_progress_schedulers
+            del in_progress_schedulers[voice_client.channel]
             await dc
             logging.info("Disconnected from voice channel. (By alone timeout task)")
 
     # Check if the member is in a voice channel
     if check_alone_in_voice_channel(voice_client):
-        # Create a new asyncio.Task. shedule() will wait @timeout for recheck if CLIENT is alone
+        # Create a new asyncio.Task. schedule() will wait @timeout for recheck if CLIENT is alone
         task = asyncio.ensure_future(schedule())
-        # add this task to @in_progress_shedulers
-        in_progress_shedulers[voice_client.channel] = task
+        # add this task to @in_progress_schedulers
+        in_progress_schedulers[voice_client.channel] = task
 
 
 def check_alone_in_voice_channel(voice_client: discord.VoiceClient):

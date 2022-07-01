@@ -8,14 +8,13 @@ from typing import Tuple, Optional, Dict
 import discord
 from multipledispatch import dispatch
 
-from ...exception import DuplicateGuildPlayerThreadError
+from exception import DuplicateGuildPlayerThreadError
 
 from ..musics import SimpleMusic, Playlist
 
 from ..music_queue import MusicQueue
 from ..mode import MODE
 from ..factory import AudioFactory
-from ...setting import CLIENT
 
 
 class Player(Thread):
@@ -31,11 +30,11 @@ class Player(Thread):
         return cls._guild_thread[guild]
 
     @classmethod
-    def setup_music_queue(cls):
+    def setup_music_queue(cls, client: discord.Client):
         """
         Create a thread by discord.Guild where the CLIENT is present
         """
-        for guild in CLIENT.guilds:
+        for guild in client.guilds:
             # Starting a Player per guild
             Player(guild).start()
 
@@ -70,7 +69,6 @@ class Player(Thread):
         self._semaphore_is_playing: Semaphore = Semaphore(0)
         self._semaphore_queue: Semaphore = Semaphore(0)
         self._queue = MusicQueue(self._semaphore_queue)
-
         self._mode = MODE.NORMAL
         self._running = True
 
@@ -113,7 +111,7 @@ class Player(Thread):
         self._semaphore_is_playing.release()
         # Set the music currently playing to None if the queue is empty
         if not self._queue:
-            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), CLIENT.loop)
+            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), asyncio.get_event_loop())
             self._currently_playing_music = None
 
     def get_now_played(self) -> Optional[Tuple[str, str]]:

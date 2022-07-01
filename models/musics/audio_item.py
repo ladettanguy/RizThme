@@ -3,8 +3,6 @@ from abc import ABC, abstractmethod
 
 import discord
 
-from ...setting import CLIENT
-
 
 class AudioItem(ABC):
 
@@ -30,4 +28,4 @@ class AudioItem(ABC):
         """
         Send message to channel
         """
-        asyncio.run_coroutine_threadsafe(self._channel.send(message), CLIENT.loop)
+        asyncio.run_coroutine_threadsafe(self._channel.send(message), asyncio.get_event_loop())

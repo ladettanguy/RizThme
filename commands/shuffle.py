@@ -1,11 +1,10 @@
 import discord
 
-from ..models import Player
-from ..models.mode import MODE
-from ..setting import CLIENT
+from models.threads import Player
+from models.mode import MODE
 
 
-async def shuffle(message: discord.Message):
+async def shuffle(client: discord.Client, message: discord.Message):
     """
     Setting up the shuffle mode to the music player in the guild.
     """
@@ -14,4 +13,3 @@ async def shuffle(message: discord.Message):
     Player.get(guild).set_mode(MODE.SHUFFLE)
     await message.channel.send('Mode: Shuffle activeted !')
 
-CLIENT.add_command(["shuffle"], shuffle)

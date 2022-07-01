@@ -1,20 +1,19 @@
 import discord
 
-from ..setting import CLIENT
+alias = {"next"}
 
 
-async def skip(message: discord.Message):
+async def skip(client: discord.Client, message: discord.Message):
     """
     pass the music of your current Guild
 
-    :param message:
+    :param client: Client discord
+    :param message: discord.Message
     """
-    voice_client: discord.VoiceClient = discord.utils.get(CLIENT.voice_clients, guild=message.guild)
+    voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild=message.guild)
     if not voice_client:
         return
     if voice_client.is_paused():
         voice_client.resume()
     if voice_client.is_playing():
         voice_client.stop()
-
-CLIENT.add_command(["next", "skip"], skip)

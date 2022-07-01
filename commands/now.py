@@ -1,13 +1,15 @@
 import discord
 
-from ..models import Player
-from ..setting import CLIENT
+from models.threads import Player
+
+alias = {"nowplaying"}
 
 
-async def now(message: discord.Message):  # sourcery skip: use-named-expression
+async def now(client: discord.Client, message: discord.Message):  # sourcery skip: use-named-expression
     """
     Send to the same textual channel, the current music playing in this Guild
 
+    :param client: Client discord
     :param message: discord.Message
     """
     guild: discord.Guild = message.guild or message.author.guild
@@ -18,5 +20,3 @@ async def now(message: discord.Message):  # sourcery skip: use-named-expression
         await message.channel.send(f'titre: {info[0]}.\nLien: {info[1]}')
     else:
         await message.channel.send("I'm not playing song")
-
-CLIENT.add_command(["now", "nowplaying", "nowplay"], now)

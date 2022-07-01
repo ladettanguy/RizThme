@@ -1,14 +1,13 @@
 import logging
+import discord
+from models.threads import Player
 
-from ..setting import CLIENT
-from ..models import Player
 
-
-@CLIENT.event
-async def on_guild_remove(guild):
+async def on_guild_remove(client: discord.Client, guild: discord.Guild):
     """
     When a guild is removed, remove the music players linked to it.
 
+    :param client: Client discord
     :param guild: The guild that was removed.
     :type guild: discord.Guild
     """

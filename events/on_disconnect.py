@@ -1,14 +1,16 @@
 import logging
-from ..setting import CLIENT, TOKEN
+
+import discord
+
+from setting.config import TOKEN
 
 
-@CLIENT.event
-async def on_disconnect():
+async def on_disconnect(client: discord.Client):
     """
     this event run after the server disconnect the client.
 
     It's used to relogin CLIENT.
     """
     logging.info('Client down!')
-    await CLIENT.login(TOKEN)
+    await client.login(TOKEN)
     logging.info('Client up!')
