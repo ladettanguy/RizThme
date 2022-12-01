@@ -6,7 +6,7 @@ class DuplicateGuildPlayerThreadError(Exception):
         self.guild = guild
 
     def __str__(self):
-        return f"You try to create a 2nd Player for the guilde {self.guild}"
+        return f"You try to create a 2nd Player for the guild {self.guild}"
 
 
 class BadLinkError(Exception):

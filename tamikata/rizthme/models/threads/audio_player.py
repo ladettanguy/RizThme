@@ -8,7 +8,7 @@ from typing import Tuple, Optional, Dict
 import discord
 from multipledispatch import dispatch
 
-from exception import DuplicateGuildPlayerThreadError
+from tamikata.rizthme.exception import DuplicateGuildPlayerThreadError
 
 from ..musics import SimpleMusic, Playlist
 
