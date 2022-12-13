@@ -1,6 +1,6 @@
 import logging
 
-from tamikata.rizthme.models.threads import Player
+from rizthme.models.threads import Player
 
 
 def init(client: "Client"):

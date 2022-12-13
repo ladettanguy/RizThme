@@ -1,6 +1,6 @@
 import discord
-from tamikata.rizthme.models.threads import Player
-from tamikata.rizthme.models.mode import MODE
+from rizthme.models.threads import Player
+from rizthme.models.mode import MODE
 
 
 def init(client: "Client"):

@@ -38,8 +38,8 @@ class Client(discord.Client):
         """
         path = os.path.join(dir_name, directory)
         list_module = [
-            import_module_from_file(path) for path in glob(os.path.abspath(path) + '/*')
-            if os.path.isfile(path) and path.endswith(".py") and not "__" in path
+            import_module_from_file(path) for path in glob(os.path.abspath(path) + '/*.py')
+            if not "__" in path
         ]
         for module in list_module:
             init = getattr(module, 'init')

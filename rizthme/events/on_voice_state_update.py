@@ -4,7 +4,7 @@ from typing import Dict
 
 import discord
 
-from tamikata.rizthme.models.threads import Player
+from rizthme.models.threads import Player
 
 timeout = 10
 

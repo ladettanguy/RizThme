@@ -1,5 +1,5 @@
 import logging
-from tamikata.rizthme.setting.config import TOKEN
+from rizthme.setting.config import TOKEN
 
 
 def init(client: "Client"):

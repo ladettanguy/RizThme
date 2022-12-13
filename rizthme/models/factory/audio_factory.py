@@ -3,7 +3,7 @@ import discord
 
 from abc import ABC
 
-from tamikata.rizthme.exception import BadLinkError
+from rizthme.exception import BadLinkError
 from ..musics import YTMusic, YTPlaylist, Playable
 
 
