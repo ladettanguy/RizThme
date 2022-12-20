@@ -1,0 +1,19 @@
+name: Publishing
+run-name: publishing on pypi ${{ github.repository }}
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install setuptools and twine
+        run: python3 -m pip install --upgrade twine setuptools
+      - name: publishing
+        run: |
+          python3 setup.py sdist
+          twine check dist/*
+          twine upload -u ${{secrets.USERNAME}} -p {{secrets.PASSWORD}} dist/*
