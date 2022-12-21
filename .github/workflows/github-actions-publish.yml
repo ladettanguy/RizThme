@@ -18,4 +18,5 @@ jobs:
           echo "${TAG##*/}" > version.txt
           python3 setup.py sdist
           twine check dist/*
+          echo "${{secrets.USERNAME}} {{secrets.PASSWORD}}"
           twine upload -u ${{secrets.USERNAME}} -p {{secrets.PASSWORD}} dist/*
