@@ -16,4 +16,4 @@ jobs:
         run: |
           pipenv lock
           pipenv install --dev
-          pipenv run pytest test/*
+          pipenv run pytest tests/*
