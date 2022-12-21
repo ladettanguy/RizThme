@@ -18,7 +18,7 @@ jobs:
         run: python3 -m pip install --upgrade twine setuptools
       - name: publishing
         run: |
-          echo $TAG
-          python3 setup.py sdist --new-version "${ $TAG##*/ }"
+          TAG=${TAG##*/}
+          python3 setup.py sdist --new-version $TAG
           twine check dist/*
           twine upload -u $USERNAME -p $PASSWORD dist/*
