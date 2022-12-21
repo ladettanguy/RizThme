@@ -7,7 +7,7 @@ readme = (this_directory / "README.md").read_text()
 try:
     version = (this_directory / "version.txt").read_text()
 except FileNotFoundError:
-    version = ""
+    version = "latest"
 
 setup(
     name='rizthme',
