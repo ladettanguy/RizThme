@@ -4,14 +4,10 @@ from setuptools import setup, find_packages
 from pathlib import Path
 this_directory = Path(__file__).parent
 readme = (this_directory / "README.md").read_text()
-try:
-    version = (this_directory / "version.txt").read_text()
-except FileNotFoundError:
-    version = "latest"
+
 
 setup(
     name='rizthme',
-    version=version,
     license='AGPL-3.0',
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",

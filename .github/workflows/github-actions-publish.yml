@@ -8,9 +8,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      - TAG=${{ github.ref }}
-      - USERNAME=${{ secrets.USERNAME }}
-      - PASSWORD=${{ secrets.PASSWORD }}
+      TAG: ${{ github.ref##*/ }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -19,6 +19,6 @@ jobs:
       - name: publishing
         run: |
           echo "${TAG##*/}" > version.txt
-          python3 setup.py sdist egg-info
+          python3 setup.py sdist --new-version $
           twine check dist/*
           twine upload -u $USERNAME -p $PASSWORD dist/*
