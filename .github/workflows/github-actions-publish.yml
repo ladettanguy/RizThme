@@ -14,7 +14,8 @@ jobs:
         run: python3 -m pip install --upgrade twine setuptools
       - name: publishing
         run: |
-          echo "${github.ref##*/}" > version.txt
+          TAG=${{ github.ref }}
+          echo "${TAG##*/}" > version.txt
           python3 setup.py sdist
           twine check dist/*
           twine upload -u ${{secrets.USERNAME}} -p {{secrets.PASSWORD}} dist/*
