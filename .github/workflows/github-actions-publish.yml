@@ -8,7 +8,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.ref##*/ }}
+      TAG: ${{ github.ref }}
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
     steps:
