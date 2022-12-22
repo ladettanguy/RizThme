@@ -9,8 +9,7 @@ readme = (this_directory / "README.md").read_text()
 setup(
     name='rizthme',
     license='AGPL-3.0',
-    se_scm_version=True,
-    setup_requires=['setuptools_scm'],
+    version="",
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',

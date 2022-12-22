@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Cloner le dépôt Git
         uses: actions/checkout@v2
+      - name: Récupérer le tag actuel
+        id: tag
+        run: echo "::set-output name=tag::$(git describe --tags)"
+      - name: Mettre à jour la version dans setup.py
+        run: sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
       - name: Installer les dépendances
         run: |
           pip install setuptools twine
