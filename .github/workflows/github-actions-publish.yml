@@ -7,17 +7,12 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      USERNAME: ${{ secrets.USERNAME }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-
+    
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Récupère le nom du tag Git actuel
-        env:
-          TAG: $(git describe --tags --abbrev=0)
+      - name: build
         run: python3 setup.py sdist bdist_wheel
 
       - name: Publish
