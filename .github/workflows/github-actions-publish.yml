@@ -1,22 +1,24 @@
 name: Publishing
 run-name: publishing on pypi ${{ github.repository }}
+
 on:
   push:
     tags:
       - '*'
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
-
+    env:
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: build
-        run: python3 setup.py sdist bdist_wheel
-
-      - name: Publish
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          # Utilisez le nom du tag actuel comme version du package
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Cloner le dépôt Git
+        uses: actions/checkout@v2
+      - name: Installer les dépendances
+        run: |
+          pip install setuptools twine
+      - name: Construire et publier le package
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload -u $USERNAME -p $PASSWORD dist/*
