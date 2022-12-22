@@ -14,6 +14,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: |
+          pip install setuptools_scm
           python3 setup.py sdist&
       - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1
