@@ -1,3 +1,5 @@
+import os
+
 from setuptools import setup, find_packages
 from packaging.version import parse as parse_version
 
