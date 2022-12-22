@@ -1,15 +1,17 @@
 from setuptools import setup, find_packages
-
 # read the contents of your README file
 from pathlib import Path
 this_directory = Path(__file__).parent
 readme = (this_directory / "README.md").read_text()
-
+try:
+    version = (this_directory / "version").read_text()
+except FileNotFoundError:
+    version = None
 
 setup(
     name='rizthme',
     license='AGPL-3.0',
-    version=None,
+    version=version,
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',

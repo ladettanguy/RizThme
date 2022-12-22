@@ -19,6 +19,7 @@ jobs:
       - name: publishing
         run: |
           TAG=${TAG##*/}
-          python3 setup.py sdist --new-version $TAG
+          echo $TAG > version
+          python3 setup.py sdist
           twine check dist/*
           twine upload -u $USERNAME -p $PASSWORD dist/*
