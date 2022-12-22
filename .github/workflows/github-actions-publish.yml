@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Installer git
+        run: sudo apt-get install -y git
       - name: Récupère le nom du tag Git actuel
         run: |
           TAG=$(git describe --abbrev=0)
