@@ -10,17 +10,16 @@ jobs:
     env:
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Installer git
-        run: sudo apt-get install -y git
+
       - name: Récupère le nom du tag Git actuel
-        run: |
-          TAG=$(git describe --tags --abbrev=0)
-          echo ::set-env name=TAG::$TAG
-      - run: |
-          python3 setup.py sdist bdist_wheel
+        env:
+          TAG: $(git describe --tags --abbrev=0)
+        run: python3 setup.py sdist bdist_wheel
+
       - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
