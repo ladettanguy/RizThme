@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
-from setuptools_scm import get_version
+from packaging.version import parse as parse_version
+
+# Récupère la version du tag Git à partir de la variable d'environnement TAG
+tag = os.environ['TAG']
+version = parse_version(tag)
 
 # read the contents of your README file
 from pathlib import Path
@@ -10,11 +14,11 @@ readme = (this_directory / "README.md").read_text()
 setup(
     name='rizthme',
     license='AGPL-3.0',
-    version=get_version(),
+    version=version.public,
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',
-    author_email='sti2dlab.ladettanguy@gmail.com',
+    author_email='sti2dlab.ladettang    uy@gmail.com',
     packages=find_packages(include=['rizthme.*']),
     url='https://github.com/ladettanguy/rizthme',
     keywords=
