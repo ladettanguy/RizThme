@@ -7,19 +7,18 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      TAG: ${{ github.ref }}
-      USERNAME: ${{ secrets.USERNAME }}
-      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Récupérer le tag actuel
+        id: tag
+        run: echo "::set-output name=tag::$(git describe --tags)"
+      - name: Mettre à jour la version dans setup.py
+        run: sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
       - name: Install setuptools and twine
         run: python3 -m pip install --upgrade twine setuptools
       - name: publishing
         run: |
-          TAG=${TAG##*/}
-          echo $TAG > version
           python3 setup.py sdist
           twine check dist/*
           twine upload -u $USERNAME -p $PASSWORD dist/*
