@@ -13,15 +13,11 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Récupérer le tag actuel
-        id: tag
-        run: echo "::set-output name=tag::$(git describe --tags)"
-      - name: Mettre à jour la version dans setup.py
-        run: sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
-      - name: Install setuptools and twine
-        run: python3 -m pip install --upgrade twine setuptools
-      - name: publishing
-        run: |
-          python3 setup.py sdist
-          twine check dist/*
-          twine upload -u $USERNAME -p $PASSWORD dist/*
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@v1
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          # Utilisez le nom du tag actuel comme version du package
+          version: ${{ github.ref }}

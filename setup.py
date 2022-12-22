@@ -1,4 +1,6 @@
 from setuptools import setup, find_packages
+from setuptools_scm import get_version
+
 # read the contents of your README file
 from pathlib import Path
 this_directory = Path(__file__).parent
@@ -8,7 +10,7 @@ readme = (this_directory / "README.md").read_text()
 setup(
     name='rizthme',
     license='AGPL-3.0',
-    version=None,
+    version=get_version(),
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',
