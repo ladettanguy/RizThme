@@ -14,7 +14,7 @@ setup(
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',
-    author_email='sti2dlab.ladettang    uy@gmail.com',
+    author_email='sti2dlab.ladettanguy@gmail.com',
     packages=find_packages(include=['rizthme.*']),
     url='https://github.com/ladettanguy/rizthme',
     keywords=
