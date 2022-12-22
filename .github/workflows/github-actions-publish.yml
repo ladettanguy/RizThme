@@ -19,7 +19,9 @@ jobs:
         id: tag
         run: echo "::set-output name=tag::$(git describe --tags)"
       - name: Mettre à jour la version dans setup.py
-        run: sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
+        run: |
+          sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
+          cat setup.py
       - name: Installer les dépendances
         run: |
           pip install setuptools twine
