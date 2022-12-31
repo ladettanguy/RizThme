@@ -22,7 +22,7 @@ jobs:
       - name: Execute les tests
         run: |
           poetry install
-          pytest tests/
+          poetry run pytest tests/
       - name: Changement du tag
         run: |
           poetry --version $TAG
