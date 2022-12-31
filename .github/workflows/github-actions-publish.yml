@@ -21,7 +21,7 @@ jobs:
           pip install poetry
       - name: Execute les tests
         run: |
-          poetry install --dev
+          poetry install
           pytest tests/
       - name: Changement du tag
         run: |

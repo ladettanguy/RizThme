@@ -11,5 +11,5 @@ jobs:
         run: python3 -m pip install poetry
       - name: Lance les tests
         run: |
-          poetry install --dev
+          poetry install
           poetry run pytest tests/*
