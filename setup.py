@@ -9,7 +9,7 @@ readme = (this_directory / "README.md").read_text()
 setup(
     name='rizthme',
     license='AGPL-3.0',
-    version="",
+    version='',
     author="Tanguy Ladet",
     maintainer="Tanguy Ladet",
     maintainer_email='sti2dlab.ladettanguy@gmail.com',

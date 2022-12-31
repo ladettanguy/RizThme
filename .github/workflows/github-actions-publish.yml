@@ -12,20 +12,21 @@ jobs:
     env:
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+      TAG: $(git describe --tags)
     steps:
       - name: Cloner le dépôt Git
         uses: actions/checkout@v2
-      - name: Récupérer le tag actuel
-        id: tag
-        run: echo "::set-output name=tag::$(git describe --tags)"
-      - name: Mettre à jour la version dans setup.py
-        run: |
-          sed -i "s/version='.*'/version='${{ steps.tag.outputs.tag }}'/" setup.py
-          cat setup.py
       - name: Installer les dépendances
         run: |
-          pip install setuptools twine
-      - name: Construire et publier le package
+          pip install poetry
+      - name: Execute les tests
         run: |
-          python setup.py sdist bdist_wheel
-          twine upload -u $USERNAME -p $PASSWORD dist/*
+          poetry install --dev
+          pytest tests/
+      - name: Changement du tag
+        run: |
+          poetry --version $TAG
+      - name: Build and Publish
+        run: |
+          poetry build
+          poetry publish -u $USERNAME -p $PASSWORD
