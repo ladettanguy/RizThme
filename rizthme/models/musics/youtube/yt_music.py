@@ -6,7 +6,7 @@ from pytube import YouTube
 from typing import Callable
 from multipledispatch import dispatch
 
-from ..simple_music import SimpleMusic
+from rizthme.models.musics.simple_music import SimpleMusic
 
 
 class YTMusic(SimpleMusic):

@@ -2,8 +2,8 @@ from typing import List
 from threading import Semaphore, Lock
 from multipledispatch import dispatch
 
-from .threads import PlaylistQueueAdder, MusicQueueAdder
-from .musics import SimpleMusic, Playlist
+from rizthme.models.threads import PlaylistQueueAdder, MusicQueueAdder
+from rizthme.models.musics import SimpleMusic, Playlist
 
 
 class MusicQueue(List[SimpleMusic]):

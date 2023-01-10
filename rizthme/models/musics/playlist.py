@@ -2,7 +2,7 @@ from abc import ABC
 
 from typing import Iterable
 
-from .audio_item import AudioItem
+from rizthme.models.musics.audio_item import AudioItem
 
 
 class Playlist(AudioItem, ABC):

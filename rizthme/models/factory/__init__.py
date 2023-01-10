@@ -1,1 +1,1 @@
-from .audio_factory import AudioFactory
+from rizthme.models.factory.audio_factory import AudioFactory

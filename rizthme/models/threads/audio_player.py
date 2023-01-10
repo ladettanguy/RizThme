@@ -1,20 +1,17 @@
 import asyncio
 import logging
+import discord
+
 from random import randint
 from threading import Thread, Semaphore
-
 from typing import Tuple, Optional, Dict
-
-import discord
 from multipledispatch import dispatch
 
 from rizthme.exception import DuplicateGuildPlayerThreadError
-
-from ..musics import SimpleMusic, Playlist
-
-from ..music_queue import MusicQueue
-from ..mode import MODE
-from ..factory import AudioFactory
+from rizthme.models.musics import SimpleMusic, Playlist
+from rizthme.models.music_queue import MusicQueue
+from rizthme.models.mode import MODE
+from rizthme.models.factory import AudioFactory
 
 
 class Player(Thread):

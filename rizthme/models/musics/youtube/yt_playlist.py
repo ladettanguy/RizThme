@@ -2,9 +2,9 @@ import discord
 import pytube
 
 from pytube.helpers import DeferredGeneratorList
-from ..playlist import Playlist
+from rizthme.models.musics.playlist import Playlist
 
-from .yt_music import YTMusic
+from rizthme.models.musics.youtube.yt_music import YTMusic
 
 
 class YTPlaylist(Playlist):

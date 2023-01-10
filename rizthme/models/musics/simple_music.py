@@ -1,6 +1,6 @@
 from abc import ABC
 
-from . import Playable, AudioItem
+from rizthme.models.musics import Playable, AudioItem
 
 
 class SimpleMusic(AudioItem, Playable, ABC):

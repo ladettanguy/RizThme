@@ -1,7 +1,7 @@
 from threading import Thread, Semaphore, Lock
 from typing import List
 
-from ..musics import Playlist, SimpleMusic
+from rizthme.models.musics import Playlist, SimpleMusic
 
 
 class PlaylistQueueAdder(Thread):

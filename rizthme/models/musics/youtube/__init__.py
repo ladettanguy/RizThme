@@ -1,2 +1,2 @@
-from .yt_music import YTMusic
-from .yt_playlist import YTPlaylist
+from rizthme.models.musics.youtube.yt_music import YTMusic
+from rizthme.models.musics.youtube.yt_playlist import YTPlaylist

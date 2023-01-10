@@ -4,7 +4,7 @@ import discord
 from abc import ABC
 
 from rizthme.exception import BadLinkError
-from ..musics import YTMusic, YTPlaylist, Playable
+from rizthme.models.musics import YTMusic, YTPlaylist, Playable
 
 
 class AudioFactory(ABC):
