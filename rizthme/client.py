@@ -22,7 +22,6 @@ class Client(discord.Client):
     def __init__(self, prefix="!"):
         self.commands = {}
         self.PREFIX = prefix
-        self.load()
         discord.Client.__init__(self, intents=discord.Intents.all())
 
     def load(self):

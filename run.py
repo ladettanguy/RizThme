@@ -7,4 +7,5 @@ logging.basicConfig(filename='log.log', filemode='w', level="INFO",
                     format='%(asctime)s -- %(name)s  -- %(levelname)s -- %(message)s', force=True)
 
 CLIENT = Client()
+Client().load()
 CLIENT.run(TOKEN)
