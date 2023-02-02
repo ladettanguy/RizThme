@@ -36,7 +36,7 @@ class Player(Thread):
             try:
                 Player(client, guild).start()
             except DuplicateGuildPlayerThreadError:
-                pass
+                logging.warning(f"Several Player is trying to be create for {guild.name}")
 
     @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
