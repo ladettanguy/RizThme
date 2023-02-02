@@ -115,8 +115,10 @@ class Player(Thread):
         self._semaphore_is_playing.release()
         # Set the music currently playing to None if the queue is empty
         if not self._queue:
-            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), self._client.loop)
-            self._currently_playing_music = None
+            voice_client = self._voice_client or discord.utils.get(self._client.voice_clients, channel=self._guild)
+            if voice_client is not None:
+                asyncio.run_coroutine_threadsafe(voice_client.disconnect(force=True), self._client.loop)
+                self._currently_playing_music = None
 
     def get_now_played(self) -> Optional[Tuple[str, str]]:
         """
