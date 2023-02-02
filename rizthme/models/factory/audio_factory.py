@@ -1,4 +1,6 @@
 import re
+from typing import Optional
+
 import discord
 
 from abc import ABC
@@ -11,6 +13,8 @@ class AudioFactory(ABC):
     """
     Factory class for creating music objects.
     """
+
+    client: Optional["Client"] = None
 
     dict_regex = {
         YTMusic: r"^https?:\/\/(www.)?(youtube.com|youtu.be)\/watch?(.*)$",
@@ -33,5 +37,5 @@ class AudioFactory(ABC):
         channel = message.channel
         for PlayableClass, regex in cls.dict_regex.items():
             if re.match(regex, url):
-                return PlayableClass(url, channel)
+                return PlayableClass(cls.client, url, channel)
         raise BadLinkError(f'your URL "{url}" is not a valid link.')

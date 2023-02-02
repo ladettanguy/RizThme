@@ -14,17 +14,13 @@ class YTMusic(SimpleMusic):
     Class for handling music from YouTube.
     """
 
-    @dispatch(str, discord.TextChannel)
-    def __init__(self, url: str, channel: discord.TextChannel):
-        super().__init__(url, channel)
-        self.ytb: YouTube = YouTube(url)
+    def __init__(self, client: "Client", url: str | YouTube, channel: discord.TextChannel):
+        SimpleMusic.__init__(self, client, url, channel)
+        if isinstance(url, str):
+            self.ytb: YouTube = YouTube(url)
+        else:
+            self.ytb: YouTube = url
         self._stream_url: str = self.ytb.streams.filter(only_audio=True).order_by('abr').desc().first().url
-
-    @dispatch(YouTube, discord.TextChannel)
-    def __init__(self, youtube: YouTube, channel: discord.TextChannel):
-        super().__init__(youtube.watch_url, channel)
-        self.ytb = youtube
-        self._stream_url = youtube.streams.filter(only_audio=True).order_by('abr').desc().first().url
 
     def is_valid(self, send_message: bool = False) -> bool:
         """

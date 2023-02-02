@@ -5,10 +5,9 @@ import discord
 from random import randint
 from threading import Thread, Semaphore
 from typing import Tuple, Optional, Dict
-from multipledispatch import dispatch
 
-from rizthme.exception import DuplicateGuildPlayerThreadError
-from rizthme.models.musics import SimpleMusic, Playlist
+from rizthme.exception import DuplicateGuildPlayerThreadError, BadLinkError
+from rizthme.models.musics import SimpleMusic, Playable
 from rizthme.models.music_queue import MusicQueue
 from rizthme.models.mode import MODE
 from rizthme.models.factory import AudioFactory
@@ -31,10 +30,11 @@ class Player(Thread):
         """
         Create a thread by discord.Guild where the CLIENT is present
         """
+        AudioFactory.client = client
         for guild in client.guilds:
             # Starting a Player per guild
             try:
-                Player(guild).start()
+                Player(client, guild).start()
             except DuplicateGuildPlayerThreadError:
                 pass
 
@@ -53,11 +53,14 @@ class Player(Thread):
         Add a music in the queue of the appropriate Guild
         :param message: discord.Message
         """
-        music = AudioFactory.create_playable(message)
-        guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
-        cls.get(guild)._add_queue(music)
+        try:
+            music = AudioFactory.create_playable(message)
+            guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
+            cls.get(guild)._add_queue(music)
+        except BadLinkError as e:
+            logging.warning(str(e))
 
-    def __init__(self, guild: discord.Guild):
+    def __init__(self, client: discord.Client, guild: discord.Guild):
         super().__init__()
         self._guild: discord.Guild = guild
         if self._guild in self._guild_thread:
@@ -71,6 +74,7 @@ class Player(Thread):
         self._queue = MusicQueue(self._semaphore_queue)
         self._mode = MODE.NORMAL
         self._running = True
+        self._client = client
 
     def delete_thread(self):
         """
@@ -111,7 +115,7 @@ class Player(Thread):
         self._semaphore_is_playing.release()
         # Set the music currently playing to None if the queue is empty
         if not self._queue:
-            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), asyncio.get_event_loop())
+            asyncio.run_coroutine_threadsafe(self._guild.voice_client.disconnect(), self._client.loop)
             self._currently_playing_music = None
 
     def get_now_played(self) -> Optional[Tuple[str, str]]:
@@ -125,21 +129,12 @@ class Player(Thread):
         if self._currently_playing_music:
             return self._currently_playing_music.get_title(), self._currently_playing_music.get_url()
 
-    @dispatch(SimpleMusic)
-    def _add_queue(self, music: SimpleMusic):
-        """
-        Add a music in the queue of the appropriate Guild
-        :param music: Music
-        """
-        self._queue.add_music(music)
-
-    @dispatch(Playlist)
-    def _add_queue(self, playlist: Playlist):
+    def _add_queue(self, audio_item: Playable):
         """
         Add a playlist in the queue of the appropriate Guild
         :param playlist: Playlist
         """
-        self._queue.add_music(playlist)
+        self._queue.add_music(audio_item)
 
     def clear_queue(self):
         """

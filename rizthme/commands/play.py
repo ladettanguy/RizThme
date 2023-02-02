@@ -31,4 +31,4 @@ def init(client: "Client"):
             Player.set_voice_client(guild, voice_client)
 
         # Call Player,to add music
-        asyncio.run_coroutine_threadsafe(Player.add_music(message), client.loop)
+        Player.add_music(message)

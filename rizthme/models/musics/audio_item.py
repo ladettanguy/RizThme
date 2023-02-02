@@ -6,7 +6,8 @@ import discord
 
 class AudioItem(ABC):
 
-    def __init__(self, url, channel: discord.TextChannel):
+    def __init__(self, client, url, channel: discord.TextChannel):
+        self.client = client
         self._url = url
         self._channel = channel
 
@@ -28,4 +29,4 @@ class AudioItem(ABC):
         """
         Send message to channel
         """
-        asyncio.run_coroutine_threadsafe(self._channel.send(message), asyncio.get_event_loop())
+        asyncio.run_coroutine_threadsafe(self._channel.send(message), self.client.loop)

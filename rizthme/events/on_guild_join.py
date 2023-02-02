@@ -14,4 +14,4 @@ def init(client: "Client"):
         :param guild: The guild that was joined.
         """
         logging.info(f"Joined guild {guild.name}")
-        Player(guild).start()
+        Player(client, guild).start()

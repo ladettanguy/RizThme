@@ -10,7 +10,7 @@ from rizthme.models.musics.youtube.yt_music import YTMusic
 class YTPlaylist(Playlist):
 
     def __init__(self, url: str, channel: discord.TextChannel):
-        super().__init__(url, channel)
+        Playlist.__init__(self, url, channel)
         self.plt: pytube.Playlist = pytube.Playlist(url)
         self._title = self.plt.title
 

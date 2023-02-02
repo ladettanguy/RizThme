@@ -1,7 +1,11 @@
 import discord
 
 
-class DuplicateGuildPlayerThreadError(Exception):
+class RizthmeException(Exception):
+    pass
+
+
+class DuplicateGuildPlayerThreadError(RizthmeException):
     def __init__(self, guild: discord.Guild):
         self.guild = guild
 
@@ -9,7 +13,7 @@ class DuplicateGuildPlayerThreadError(Exception):
         return f"You try to create a 2nd Player for the guild {self.guild}"
 
 
-class BadLinkError(Exception):
+class BadLinkError(RizthmeException):
     def __init__(self, link: str):
         self.link = link
 
