@@ -33,7 +33,10 @@ class Player(Thread):
         """
         for guild in client.guilds:
             # Starting a Player per guild
-            Player(guild).start()
+            try:
+                Player(guild).start()
+            except DuplicateGuildPlayerThreadError:
+                pass
 
     @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
