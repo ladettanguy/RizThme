@@ -9,33 +9,47 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install semver-cli
-        run: sudo apt-get install node-semver -y
       - name: Get last tag
         id: last_tag
         run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
-      - name: Determine new tag version
-        id: tag_version
+      - name: Determine new version
+        id: determine_version
         run: |
-          last_tag=$INPUT_LAST_TAG
-          message=$(git log --format=%B -n 1 $GITHUB_SHA)
-          if [[ $message == *!* ]]; then
-            echo "tag=$(semver -i major $last_tag)" >> $GITHUB_OUTPUT
-          elif [[ $message == *feat* ]]; then
-            echo "tag=$(semver -i minor $last_tag)" >> $GITHUB_OUTPUT
-          elif [[ $message == *fix* ]]; then
-            echo "tag=$(semver -i patch $last_tag)" >> $GITHUB_OUTPUT
+          LAST_TAG=$(git describe --abbrev=0 --tags)
+          COMMITS=$(git log --pretty=format:%s $LAST_TAG..HEAD)
+          if echo "$COMMITS" | grep -q "!"
+          then
+            NEW_VERSION="MAJOR"
+          elif echo "$COMMITS" | grep -q "feat"
+          then
+            NEW_VERSION="MINOR"
+          elif echo "$COMMITS" | grep -q "fix"
+          then
+            NEW_VERSION="PATCH"
           else
-            echo "::set-output name=tag::$last_tag"
+            echo "No relevant commit message found. Skipping tag creation."
             exit 0
           fi
-        env:
-          INPUT_LAST_TAG: ${{ steps.last_tag.outputs.tag }}
-      - name: Create Tag
-        if: steps.semver.outputs.tag != ''
-        run: git tag ${{ steps.semver.outputs.tag }} -a -m "${{ steps.semver.outputs.tag_message }}" ${{ github.sha }}
-      - name: Push changes
-        if: steps.semver.outputs.tag != ''
-        run: git push origin ${{ steps.semver.outputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo ::set-output name=new_version::$NEW_VERSION
+
+      - name: Create new tag
+        if: steps.determine_version.outputs.new_version != ''
+        run: |
+          LAST_TAG=$(git describe --abbrev=0 --tags)
+          if [ "$LAST_TAG" = "" ]; then
+            NEW_TAG="v1.0.0"
+          else
+            if [ "${{ steps.determine_version.outputs.new_version }}" = "MAJOR" ]; then
+              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
+              NEW_TAG="v$((VERSION_PARTS[0]+1)).0.0"
+            elif [ "${{ steps.determine_version.outputs.new_version }}" = "MINOR" ]; then
+              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
+              NEW_TAG="v${VERSION_PARTS[0]}.$((VERSION_PARTS[1]+1)).0"
+            else
+              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
+              NEW_TAG="v${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((VERSION_PARTS[2]+1))"
+            fi
+          fi
+          echo "Creating tag $NEW_TAG"
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
