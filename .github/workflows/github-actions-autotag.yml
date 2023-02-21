@@ -21,44 +21,12 @@ jobs:
               per_page: 1
             });
             return data[0].name;
-      - name: Determine new version
-        id: determine_version
-        run: |
-          LAST_TAG="${{ steps.latest_tag.outputs.result }}"
-          COMMITS=$(git log --pretty=format:%s $LAST_TAG..HEAD)
-          if echo "$COMMITS" | grep -q "!"
-          then
-            NEW_VERSION="MAJOR"
-          elif echo "$COMMITS" | grep -q "feat"
-          then
-            NEW_VERSION="MINOR"
-          elif echo "$COMMITS" | grep -q "fix"
-          then
-            NEW_VERSION="PATCH"
-          else
-            echo "No relevant commit message found. Skipping tag creation."
-            exit 0
-          fi
-          echo new_version=$NEW_VERSION >> $GITHUB_OUTPUT
-
-      - name: Create new tag
-        if: steps.determine_version.outputs.new_version != ''
-        run: |
-          LAST_TAG=$(git describe --abbrev=0 --tags)
-          if [ "$LAST_TAG" = "" ]; then
-            NEW_TAG="v1.0.0"
-          else
-            if [ "${{ steps.determine_version.outputs.new_version }}" = "MAJOR" ]; then
-              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
-              NEW_TAG="v$((VERSION_PARTS[0]+1)).0.0"
-            elif [ "${{ steps.determine_version.outputs.new_version }}" = "MINOR" ]; then
-              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
-              NEW_TAG="v${VERSION_PARTS[0]}.$((VERSION_PARTS[1]+1)).0"
-            else
-              IFS='.' read -ra VERSION_PARTS <<< "$LAST_TAG"
-              NEW_TAG="v${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((VERSION_PARTS[2]+1))"
-            fi
-          fi
-          echo "Creating tag $NEW_TAG"
-          git tag $NEW_TAG
-          git push origin $NEW_TAG
+      - name: Autotag
+        uses: actions/autotag@v1
+        with:
+          last_tag: ${{ steps.latest_tag.outputs.result }}
+          major_keyword: "!"
+          minor_keyword: "feat"
+          patch_keyword: "fix"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
