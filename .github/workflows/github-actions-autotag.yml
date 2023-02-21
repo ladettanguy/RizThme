@@ -11,16 +11,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get latest tag
-        uses: actions/github-script@v4
         id: latest_tag
-        with:
-          script: |
-            const { data } = await github.repos.listTags({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 1
-            });
-            return data[0].name;
+        run: echo result=$(git describe --abbrev=0 --tags) >> $GITHUB_OUTPUT
       - name: Determine new version
         id: version
         run: |
