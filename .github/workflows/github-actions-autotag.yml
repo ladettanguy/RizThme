@@ -12,7 +12,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Get latest tag
         id: latest_tag
-        run: echo result=$(git describe --abbrev=0 --tags) >> $GITHUB_OUTPUT
+        run: |
+          TAG=$(git describe --abbrev=0 --tags)
+          echo result=$TAG >> $GITHUB_OUTPUT
       - name: Determine new version
         id: version
         run: |
