@@ -1,4 +1,5 @@
 name: Autotag
+run-name: AutoTag on ${{ github.repository }}
 on:
   push:
     branches:
@@ -15,7 +16,7 @@ jobs:
       - name: Determine new version
         id: determine_version
         run: |
-          LAST_TAG="${{ steps.last_tag.outputs.tag }}"
+          LAST_TAG=${{ steps.last_tag.outputs.tag }}
           COMMITS=$(git log --pretty=format:%s $LAST_TAG..HEAD)
           if echo "$COMMITS" | grep -q "!"
           then
