@@ -31,11 +31,11 @@ jobs:
           fi
         env:
           INPUT_LAST_TAG: ${{ steps.last_tag.outputs.tag }}
-      - name: Create tag
-        if: steps.tag_version.outputs.tag != ${{ steps.last_tag.outputs.tag }}
-        uses: actions/create-tag@v1
+      - name: Create Tag
+        if: steps.semver.outputs.tag != ''
+        run: git tag ${{ steps.semver.outputs.tag }} -a -m "${{ steps.semver.outputs.tag_message }}" ${{ github.sha }}
+      - name: Push changes
+        if: steps.semver.outputs.tag != ''
+        run: git push origin ${{ steps.semver.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag_version.outputs.tag }}
-          message: Automated tag creation
