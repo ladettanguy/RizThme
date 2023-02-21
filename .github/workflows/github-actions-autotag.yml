@@ -10,13 +10,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get last tag
-        id: last_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+      - name: Get latest tag
+        uses: actions/github-script@v4
+        id: latest_tag
+        with:
+          script: |
+            const { data } = await github.repos.listTags({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 1
+            });
+            return data[0].name;
       - name: Determine new version
         id: determine_version
         run: |
-          LAST_TAG=${{ steps.last_tag.outputs.tag }}
+          LAST_TAG="${{ steps.latest_tag.outputs.result }}"
           COMMITS=$(git log --pretty=format:%s $LAST_TAG..HEAD)
           if echo "$COMMITS" | grep -q "!"
           then
@@ -31,7 +39,7 @@ jobs:
             echo "No relevant commit message found. Skipping tag creation."
             exit 0
           fi
-          echo ::set-output name=new_version::$NEW_VERSION
+          echo new_version=$NEW_VERSION >> $GITHUB_OUTPUT
 
       - name: Create new tag
         if: steps.determine_version.outputs.new_version != ''
