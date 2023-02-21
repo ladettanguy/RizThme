@@ -1,0 +1,41 @@
+name: Autotag
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install semver-cli
+        run: sudo apt-get install node-semver -y
+      - name: Get last tag
+        id: last_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+      - name: Determine new tag version
+        id: tag_version
+        run: |
+          last_tag=$INPUT_LAST_TAG
+          message=$(git log --format=%B -n 1 $GITHUB_SHA)
+          if [[ $message == *!* ]]; then
+            echo "::set-output name=tag::$(semver -i major $last_tag)"
+          elif [[ $message == *feat* ]]; then
+            echo "::set-output name=tag::$(semver -i minor $last_tag)"
+          elif [[ $message == *fix* ]]; then
+            echo "::set-output name=tag::$(semver -i patch $last_tag)"
+          else
+            echo "::set-output name=tag::$last_tag"
+            exit 0
+          fi
+        env:
+          INPUT_LAST_TAG: ${{ steps.last_tag.outputs.tag }}
+      - name: Create tag
+        if: steps.tag_version.outputs.tag != ${{ steps.last_tag.outputs.tag }}
+        uses: actions/create-tag@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.tag }}
+          message: Automated tag creation
