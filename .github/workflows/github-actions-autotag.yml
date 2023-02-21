@@ -21,12 +21,29 @@ jobs:
               per_page: 1
             });
             return data[0].name;
-      - name: Autotag
-        uses: actions/autotag@v1
-        with:
-          last_tag: ${{ steps.latest_tag.outputs.result }}
-          major_keyword: "!"
-          minor_keyword: "feat"
-          patch_keyword: "fix"
+      - name: Determine new version
+        id: version
+        run: |
+          LAST_TAG=${{ steps.latest_tag.outputs.result }}
+          COMMITS=$(git log --pretty=format:%s $LAST_TAG..HEAD)
+          if echo "$COMMITS" | grep -q "!"
+          then
+            NEW_VERSION="MAJOR"
+          elif echo "$COMMITS" | grep -q "feat"
+          then
+            NEW_VERSION="MINOR"
+          elif echo "$COMMITS" | grep -q "fix"
+          then
+            NEW_VERSION="PATCH"
+          else
+            echo "No relevant commit message found. Skipping tag creation."
+            exit 0
+          fi
+          echo new_version=$NEW_VERSION >> $GITHUB_OUTPUT
+      - name: Create tag
+        if: steps.version.outputs.new_version != ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag ${{ steps.version.outputs.new_version }}
+          git push origin ${{ steps.version.outputs.new_version }}
