@@ -13,18 +13,18 @@ jobs:
         run: sudo apt-get install node-semver -y
       - name: Get last tag
         id: last_tag
-        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
       - name: Determine new tag version
         id: tag_version
         run: |
           last_tag=$INPUT_LAST_TAG
           message=$(git log --format=%B -n 1 $GITHUB_SHA)
           if [[ $message == *!* ]]; then
-            echo "::set-output name=tag::$(semver -i major $last_tag)"
+            echo "tag=$(semver -i major $last_tag)" >> $GITHUB_OUTPUT
           elif [[ $message == *feat* ]]; then
-            echo "::set-output name=tag::$(semver -i minor $last_tag)"
+            echo "tag=$(semver -i minor $last_tag)" >> $GITHUB_OUTPUT
           elif [[ $message == *fix* ]]; then
-            echo "::set-output name=tag::$(semver -i patch $last_tag)"
+            echo "tag=$(semver -i patch $last_tag)" >> $GITHUB_OUTPUT
           else
             echo "::set-output name=tag::$last_tag"
             exit 0
