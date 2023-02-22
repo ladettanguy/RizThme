@@ -54,7 +54,7 @@ jobs:
           git push origin $NEW_TAG
 
   publish:
-    needs: auto-tag
+    needs: [testing, auto-tag]
     if: ${{ always() || startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     env:
@@ -68,10 +68,6 @@ jobs:
       - name: Installer les dépendances
         run: |
           pip install poetry
-      - name: Execute les tests
-        run: |
-          poetry install
-          poetry run pytest tests/
       - name: Changement du tag$(git describe --tags)
         run: |
           TAG=$(git describe --abbrev=0 --tags --always --first-parent HEAD)
