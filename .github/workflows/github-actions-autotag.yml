@@ -15,7 +15,7 @@ jobs:
         id: get_last_tag
         run: |
           git fetch --tags
-          echo tag=$(git describe --tags --abbrev=0) >> $GITHUB_OUTPUT
+          echo tag=$(git describe --tags --always --abbrev=0) >> $GITHUB_OUTPUT
       - name: Get commit message
         id: get_commit_message
         run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
