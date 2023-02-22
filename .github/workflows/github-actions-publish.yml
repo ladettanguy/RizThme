@@ -60,10 +60,11 @@ jobs:
     env:
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
-      TAG: $(git describe --tags)
     steps:
       - name: Cloner le dépôt Git
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Installer les dépendances
         run: |
           pip install poetry
@@ -71,9 +72,10 @@ jobs:
         run: |
           poetry install
           poetry run pytest tests/
-      - name: Changement du tag
+      - name: Changement du tag$(git describe --tags)
         run: |
-          poetry version ${{ env.TAG }}
+          TAG=$(git describe --abbrev=0 --tags --always --first-parent HEAD)
+          poetry version $TAG
       - name: Build and Publish
         run: |
           poetry build
