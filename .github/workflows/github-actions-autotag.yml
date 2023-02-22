@@ -26,7 +26,7 @@ jobs:
           LAST_TAG: ${{ steps.get_last_tag.outputs.tag }}
           MESSAGE: ${{ steps.get_commit_message.outputs.message }}
         run: |
-          TAG_PARTS=(${LAST_TAG//./ })
+          TAG_PARTS=${LAST_TAG//./ }
           if [[ $MESSAGE == *'!'* ]]; then
             NEW_TAG=$((${TAG_PARTS[0]}+1)).0.0
           elif [[ $MESSAGE == *'feat'* ]]; then
