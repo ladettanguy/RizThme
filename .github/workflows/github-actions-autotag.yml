@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Get last tag
         id: get_last_tag
         run: |
@@ -37,4 +39,6 @@ jobs:
             exit 0
           fi
           git tag -a $NEW_TAG -m "$MESSAGE"
+          git config user.name autotag
+          git config user.email autotag@github.com
           git push origin $NEW_TAG
