@@ -15,9 +15,7 @@ jobs:
           fetch-depth: 0
       - name: Get last tag
         id: get_last_tag
-        run: |
-          git fetch --tags
-          echo tag=$(git describe --abbrev=0 --tags --always --first-parent HEAD) >> $GITHUB_OUTPUT
+        run: echo tag=$(git describe --abbrev=0 --tags --always --first-parent HEAD) >> $GITHUB_OUTPUT
       - name: Get commit message
         id: get_commit_message
         run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
@@ -27,7 +25,7 @@ jobs:
           LAST_TAG: ${{ steps.get_last_tag.outputs.tag }}
           MESSAGE: ${{ steps.get_commit_message.outputs.message }}
         run: |
-          TAG_PARTS=${LAST_TAG//./ }
+          TAG_PARTS=(${LAST_TAG//./ })
           if [[ $MESSAGE == *'!'* ]]; then
             NEW_TAG=$((${TAG_PARTS[0]}+1)).0.0
           elif [[ $MESSAGE == *'feat'* ]]; then
