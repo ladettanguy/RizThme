@@ -1,7 +1,5 @@
 import asyncio
-
 import discord
-import logging
 
 
 def init(client: "Client"):
@@ -29,7 +27,7 @@ def init(client: "Client"):
 
         # if command is in commands list
         if cmd in client.commands:
-            logging.info(f"command: {cmd}, by {message.author} in {message.guild} on {message.channel} channel")
+            client.logger.info(f"command: {cmd}, by {message.author} in {message.guild} on {message.channel} channel")
             func = client.commands[cmd]
             # Call the appropriate for the command wanted and pass the discord.Message in parameters
             asyncio.run_coroutine_threadsafe(func(message), client.loop)

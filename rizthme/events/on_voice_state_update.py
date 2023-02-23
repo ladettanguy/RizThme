@@ -1,5 +1,4 @@
 import asyncio
-import logging
 from typing import Dict
 
 import discord
@@ -59,7 +58,7 @@ def init(client: "Client"):
                 # delete this schedule from @in_progress_schedulers
                 del in_progress_schedulers[voice_client.channel]
                 await dc
-                logging.info("Disconnected from voice channel. (By alone timeout task)")
+                client.logger.info("Disconnected from voice channel. (By alone timeout task)")
 
         # Check if the member is in a voice channel
         if check_alone_in_voice_channel(voice_client):

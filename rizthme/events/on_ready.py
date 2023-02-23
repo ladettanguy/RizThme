@@ -1,5 +1,3 @@
-import logging
-
 from rizthme.models.threads import Player
 
 
@@ -15,4 +13,4 @@ def init(client: "Client"):
         """
         # Setup Players Guild's thread
         Player.setup_music_queue(client)
-        logging.info('Client Ready')
+        client.logger.info('Client Ready')

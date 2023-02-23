@@ -1,0 +1,19 @@
+name: validation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install pipenv
+        run: python3 -m pip install poetry
+      - name: Lance les tests
+        run: |
+          poetry install
+          poetry run pytest tests/*

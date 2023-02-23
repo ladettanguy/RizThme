@@ -1,4 +1,3 @@
-import logging
 from rizthme.setting.config import TOKEN
 
 
@@ -11,6 +10,6 @@ def init(client: "Client"):
 
         It's used to relogin CLIENT.
         """
-        logging.info('Client down!')
+        client.logger.info('Client down!')
         await client.login(TOKEN)
-        logging.info('Client up!')
+        client.logger.info('Client up!')

@@ -1,11 +1,6 @@
-import logging
-
 import discord
-
 from pytube import YouTube
 from typing import Callable
-from multipledispatch import dispatch
-
 from rizthme.models.musics.simple_music import SimpleMusic
 
 
@@ -38,19 +33,19 @@ class YTMusic(SimpleMusic):
         """
         valid: bool = self._url != ""
         if send_message and not valid:
-            logging.warning("!play: Dont valid music")
+            self.client.logger.warning("!play: Dont valid music")
             self.send("Something's wrong, try to use !play like this: \n !play [YouTube's Link]")
         return valid
 
     def _is_valid_stream(self, send_message: bool = False) -> bool:
         """
-        Check if the audio stream from PyTube library is correct and usable
+        Check if thlogginge audio stream from PyTube library is correct and usable
         :param send_message: bool, Optional argument for send error message in message's channel with the error stack
         :return: True if the stream is usable
         """
         valid: bool = self._stream_url is not None
         if send_message and not valid:
-            logging.critical("!play: Dont valid music")
+            self.client.logger.critical("!play: Dont valid music")
             self.send("Something's wrong, YouTube link is unfunctionnal")
         return valid
 
@@ -77,7 +72,7 @@ class YTMusic(SimpleMusic):
         try:
             return discord.FFmpegPCMAudio(self._stream_url, before_options=before_options)
         except Exception as e:
-            logging.critical(f'When FFmpegPCMAudio created:\n{e}')
+            self.client.logger.critical(f'When FFmpegPCMAudio created:\n{e}')
             self.send('Error with the YouTube API function')
 
     def get_duration(self) -> int:

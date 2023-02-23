@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import discord
 
 from random import randint
@@ -36,7 +35,7 @@ class Player(Thread):
             try:
                 Player(client, guild).start()
             except DuplicateGuildPlayerThreadError:
-                logging.warning(f"Several Player is trying to be create for {guild.name}")
+                client.logger.warning(f"Several Player is trying to be create for {guild.name}")
 
     @classmethod
     def set_voice_client(cls, guild: discord.Guild, voice_client: discord.VoiceClient):
@@ -53,18 +52,19 @@ class Player(Thread):
         Add a music in the queue of the appropriate Guild
         :param message: discord.Message
         """
+        guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
+        player = cls.get(guild)
         try:
             music = AudioFactory.create_playable(message)
-            guild: discord.Guild = message.guild if message.guild is not None else message.author.guild
-            cls.get(guild)._add_queue(music)
+            player._add_queue(music)
         except BadLinkError as e:
-            logging.warning(str(e))
+            player._client.logger.warning(str(e))
 
     def __init__(self, client: discord.Client, guild: discord.Guild):
         super().__init__()
         self._guild: discord.Guild = guild
         if self._guild in self._guild_thread:
-            logging.critical('PlayerThread created 2 time for 1 Guild')
+            self._client.logger.critical('PlayerThread created 2 time for 1 Guild')
             raise DuplicateGuildPlayerThreadError(self._guild)
         self._guild_thread[guild] = self
         self._voice_client: Optional[discord.VoiceClient] = None

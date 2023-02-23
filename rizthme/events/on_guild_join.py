@@ -1,4 +1,3 @@
-import logging
 import discord
 
 from rizthme.models.threads import Player
@@ -13,5 +12,5 @@ def init(client: "Client"):
 
         :param guild: The guild that was joined.
         """
-        logging.info(f"Joined guild {guild.name}")
+        client.logger.info(f"Joined guild {guild.name}")
         Player(client, guild).start()

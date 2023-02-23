@@ -1,5 +1,6 @@
 import os
 import discord
+import logging
 import importlib.util
 from glob import glob
 from typing import Iterable
@@ -22,6 +23,7 @@ class Client(discord.Client):
     def __init__(self, prefix="!"):
         self.commands = {}
         self.PREFIX = prefix
+        self.logger = logging.getLogger("discord.rizthme")
         discord.Client.__init__(self, intents=discord.Intents.all())
 
     def load(self):

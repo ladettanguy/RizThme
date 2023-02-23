@@ -1,4 +1,3 @@
-import logging
 import discord
 from rizthme.models.threads import Player
 
@@ -13,5 +12,5 @@ def init(client: "Client"):
         :param guild: The guild that was removed.
         :type guild: discord.Guild
         """
-        logging.info(f'{guild.name} has been removed')
+        client.logger.info(f'{guild.name} has been removed')
         Player.get(guild).delete_thread()
