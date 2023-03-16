@@ -1,0 +1,1 @@
+poetry run python3.10 run.py
