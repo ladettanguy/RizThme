@@ -11,6 +11,10 @@ do this with:
 foo@bar:~$ export TOKEN=<your token>
 ```
 
+or
+
+> Write a .env file at project root 
+
 next, check that the ffmpeg module is installed on your device.
 
 ```console
@@ -27,36 +31,23 @@ foo@bar:~$ sudo apt install ffmpeg
 ## To launch the discord client
 
 ```console
-foo@bar:~$ python3 client.py
+foo@bar:~$ python3 run.py
 ```
 
-### Automatical script launching
+### Automatically script launching
 
 #### For Linux user
 
 For use automatically your virtual environment. (The virtual environment name need to be "venv/")
 
 ```console
-foo@bar:~$ source entrypoint.sh
+foo@bar:~$ make run
 ```
 
-if you don't want to use a virtual environment. juste use the script like this:
+if you want to use rizthme on docker container you can use make script for this
 
 ```console
-foo@bar:~$ bash entrypoint.sh
-```
-or 
-
-```console
-foo@bar:~$ sh entrypoint.sh
+foo@bar:~$ make build docker-run
 ```
 
-#### For Windows user
-
-> Not sure yet
-
-you can do like this if you realy want to use that in Windows system
-
-```
-C:RizThme\> entrypoint.bat
-```
+And to delete stop or restart him check Makefile possibilities
