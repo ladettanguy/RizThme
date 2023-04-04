@@ -41,7 +41,7 @@ foo@bar:~$ python3 run.py
 For use automatically your virtual environment. (The virtual environment name need to be "venv/")
 
 ```console
-foo@bar:~$ make run
+foo@bar:~$ make python-run
 ```
 
 if you want to use rizthme on docker container you can use make script for this
