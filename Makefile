@@ -1,10 +1,9 @@
 NAME=rizthme_container
 
+include .env
+
 run:
 	poetry run python3 run.py
-
-echo:
-	echo "Je suis echo"
 
 prune:
 	docker system prune -f
@@ -18,8 +17,11 @@ build: rmi
 shell:
 	docker run -it rizthme sh
 
-docker-run: prune
+docker-run: stop prune
 	docker run -d -e TOKEN=$(TOKEN) --name $(NAME) rizthme
 
+restart: stop
+	docker start $(NAME)
+
 stop:
-	docker stop $NAME
+	docker stop $(NAME)
